@@ -220,6 +220,9 @@ contract StabilityPoolVault is MezoFlowVault {
     }
 
     function _update(address from, address to, uint256 value) internal override {
+        // Share transfer: collect gains still sitting in the pool first, so they are
+        // credited to the sender who earned them, not to the recipient (audit F-07).
+        if (from != address(0) && to != address(0)) _harvest();
         _syncBtc();
         if (from != address(0)) _settle(from);
         if (to != address(0)) _settle(to);
