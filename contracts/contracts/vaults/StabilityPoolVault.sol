@@ -176,6 +176,19 @@ contract StabilityPoolVault is MezoFlowVault {
         _checkpoint();
     }
 
+    /// @dev Also pull any MUSD left in the pool once the vault is empty, so it can't skew
+    /// the next depositor's share price (audit F-11). Skipped while pool exits are paused.
+    function _sweepDust() internal override {
+        uint256 left = _poolDeposit();
+        if (left > 0 && withdrawalsOpen()) {
+            uint256 before = _musd.balanceOf(address(this));
+            stabilityPool.withdrawFromSP(left);
+            idleAssets += _musd.balanceOf(address(this)) - before;
+            _syncBtc();
+        }
+        super._sweepDust();
+    }
+
     function setBufferBps(uint16 bufferBps_) external onlyOwner {
         if (bufferBps_ > MAX_BUFFER_BPS) revert InvalidBuffer();
         bufferBps = bufferBps_;

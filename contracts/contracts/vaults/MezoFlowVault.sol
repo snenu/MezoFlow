@@ -72,6 +72,7 @@ abstract contract MezoFlowVault is ERC4626, ERC20Permit, Ownable, Pausable, Reen
     event ExitFeeCharged(address indexed owner, uint256 fee, bool toReserve);
     event CheckpointRecorded(uint64 timestamp, uint256 sharePrice);
     event Skimmed(uint256 amount);
+    event DustSwept(uint256 amount);
 
     error BelowMinDeposit(uint256 minDeposit);
     error ZeroShares();
@@ -400,6 +401,7 @@ abstract contract MezoFlowVault is ERC4626, ERC20Permit, Ownable, Pausable, Reen
         }
 
         cumulativeWithdrawals += assets;
+        if (totalSupply() == 0) _sweepDust();
         ledger.record(
             owner,
             (toReserve && fee > 0) ? KIND_EARLY_EXIT : KIND_WITHDRAW,
@@ -410,6 +412,18 @@ abstract contract MezoFlowVault is ERC4626, ERC20Permit, Ownable, Pausable, Reen
         );
         emit Withdraw(caller, receiver, owner, assets, shares);
         _checkpoint();
+    }
+
+    /// @dev When the last share is burned, rounding can leave a few wei of assets with no
+    /// owner. Left in place they would price the next depositor's shares at 2:1 or 3:1
+    /// (audit F-11), so they go to the reward reserve instead.
+    function _sweepDust() internal virtual {
+        uint256 dust = idleAssets;
+        if (dust > 0) {
+            idleAssets = 0;
+            rewardReserve += dust;
+            emit DustSwept(dust);
+        }
     }
 
     function _update(address from, address to, uint256 value) internal virtual override {
