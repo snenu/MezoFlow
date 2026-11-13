@@ -1,0 +1,29 @@
+# dependencies
+node_modules/
+
+# secrets — never commit keys
+.env
+.env.*
+!.env.example
+*.pem
+
+# hardhat
+contracts/artifacts/
+contracts/cache/
+contracts/typechain-types/
+contracts/coverage/
+contracts/*.tmp.mjs
+
+# next / vercel
+web/.next/
+web/out/
+web/.vercel/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# misc
+.DS_Store
+Thumbs.db
+*.log
+.playwright-mcp/
