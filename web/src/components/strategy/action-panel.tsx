@@ -4,10 +4,10 @@ import { useLayoutEffect, useMemo, useState } from "react";
 import { useAccount, useReadContract, useReadContracts } from "wagmi";
 import type { Address } from "viem";
 import { AmountInput, useNow } from "@/components/ui";
-import { FlowBurst } from "@/components/flow-burst";
 import { useWalletModal } from "@/components/wallet";
 import { FaucetButton } from "@/components/app/faucet";
-import { useTx, type TxStep } from "@/hooks/useTx";
+import { permitStep, useTx } from "@/hooks/useTx";
+import Link from "next/link";
 import { useSpHealth, type StrategyView } from "@/hooks/useMezoFlow";
 import { erc20Abi, KIND, spVaultAbi, termVaultAbi, vaultAbi, ADDR } from "@/lib/contracts";
 import { fmtAmount, fmtBtc, fmtDate, fmtDuration, fmtPct, fmtUsd, parseAmount, toInputValue, toNum, WAD } from "@/lib/format";
@@ -20,8 +20,6 @@ export function ActionPanel({ s }: { s: StrategyView }) {
   const isSp = s.meta.kind === KIND.STABILITY_POOL;
   const isTerm = s.meta.kind === KIND.TERM;
   const [tab, setTab] = useState<Tab>("deposit");
-  const [burst, setBurst] = useState(0);
-  const [burstColor, setBurstColor] = useState("#0EA5E9");
   useLayoutEffect(() => () => setTab("deposit"), []);
 
   const tabs: [Tab, string][] = [
@@ -32,7 +30,6 @@ export function ActionPanel({ s }: { s: StrategyView }) {
 
   return (
     <div className="panel relative overflow-hidden p-5">
-      <FlowBurst trigger={burst} color={burstColor} />
       <div className="seg w-full" role="tablist" aria-label="Action">
         {tabs.map(([k, label]) => (
           <button key={k} role="tab" aria-selected={tab === k} className="flex-1" onClick={() => setTab(k)}>
@@ -54,21 +51,11 @@ export function ActionPanel({ s }: { s: StrategyView }) {
             address={address}
             isTerm={isTerm}
             isSp={isSp}
-            onDone={() => {
-              setBurstColor("#0EA5E9");
-              setBurst((b) => b + 1);
-            }}
           />
         ) : tab === "withdraw" ? (
           <WithdrawForm s={s} address={address} isTerm={isTerm} isSp={isSp} />
         ) : (
-          <ClaimForm
-            s={s}
-            onDone={() => {
-              setBurstColor("#1E40AF");
-              setBurst((b) => b + 1);
-            }}
-          />
+          <ClaimForm s={s} />
         )}
       </div>
     </div>
@@ -89,13 +76,11 @@ function DepositForm({
   address,
   isTerm,
   isSp,
-  onDone,
 }: {
   s: StrategyView;
   address: Address;
   isTerm: boolean;
   isSp: boolean;
-  onDone: () => void;
 }) {
   const [value, setValue] = useState("");
   const { run, busy } = useTx();
@@ -149,24 +134,27 @@ function DepositForm({
 
   async function submit() {
     if (!ok || !amount) return;
-    const steps: TxStep[] = [];
-    if (needsApproval) {
-      steps.push({
-        title: `Approving ${fmtAmount(amount)} MUSD`,
-        done: `Approved ${fmtAmount(amount)} MUSD for ${s.meta.name}`,
-        request: { address: ADDR.musd, abi: erc20Abi, functionName: "approve", args: [s.meta.vault, amount] },
-      });
-    }
-    steps.push({
-      title: `Depositing ${fmtAmount(amount)} MUSD`,
-      done: `Deposited ${fmtAmount(amount)} MUSD into ${s.meta.name}`,
-      request: { address: s.meta.vault, abi: vaultAbi, functionName: "deposit", args: [amount, address] },
-    });
-    const res = await run(steps);
-    if (res) {
-      setValue("");
-      onDone();
-    }
+    const title = `Depositing ${fmtAmount(amount)} MUSD`;
+    const done = `Deposited ${fmtAmount(amount)} MUSD into ${s.meta.name}`;
+    const step = needsApproval
+      ? permitStep({
+          title,
+          done,
+          token: ADDR.musd,
+          tokenLabel: `${fmtAmount(amount)} MUSD`,
+          spender: s.meta.vault,
+          value: amount,
+          withPermit: (sig) => ({
+            address: s.meta.vault,
+            abi: vaultAbi,
+            functionName: "depositWithPermit",
+            args: [amount, address, sig],
+          }),
+          plain: { address: s.meta.vault, abi: vaultAbi, functionName: "deposit", args: [amount, address] },
+        })
+      : { title, done, request: { address: s.meta.vault, abi: vaultAbi, functionName: "deposit", args: [amount, address] } };
+    const res = await run([step]);
+    if (res) setValue("");
   }
 
   return (
@@ -186,7 +174,7 @@ function DepositForm({
         )}
       </div>
 
-      <dl className="grid gap-2 rounded-xl bg-trench/60 p-4">
+      <dl className="grid gap-2 rounded-lg bg-trench p-4">
         <Row label="You receive">{ok ? `${fmtAmount(shares)} ${isSp ? "mfSP" : isTerm ? "mfTERM" : "mfSAVE"}` : "—"}</Row>
         {s.stats.rateBps > 0 && (
           <Row label="Earns at today's rate">{ok ? `≈ ${fmtAmount(yearly)} MUSD a year` : `${fmtPct(s.stats.rateBps)} APR`}</Row>
@@ -206,14 +194,17 @@ function DepositForm({
 
       <button className="btn btn-primary btn-lg w-full" disabled={!ok || !!busy} onClick={submit}>
         {busy ? <span className="spinner" /> : null}
-        {busy ?? (needsApproval ? "Approve and deposit" : "Deposit")}
+        {busy ?? "Deposit"}
       </button>
       {needsApproval && !busy && (
-        <p className="-mt-2 text-center text-xs text-silt">Two transactions: approve this exact amount, then deposit.</p>
+        <p className="-mt-2 text-center text-xs text-silt">One transaction. You sign a permit for this exact amount first; it costs no gas.</p>
       )}
       {bal === 0n && (
-        <div className="border-t rule pt-4">
-          <p className="mb-3 text-sm text-silt">No MUSD in this wallet yet.</p>
+        <div className="grid gap-2 border-t rule pt-4">
+          <p className="text-sm text-silt">No MUSD in this wallet yet. Swap testnet BTC for MUSD, or claim a little from the test faucet.</p>
+          <Link href="/app/swap" className="btn btn-primary w-full">
+            Get MUSD with BTC
+          </Link>
           <FaucetButton className="btn btn-ghost w-full" />
         </div>
       )}
@@ -331,8 +322,8 @@ function WithdrawForm({ s, address, isTerm, isSp }: { s: StrategyView; address: 
       </div>
 
       {locked && (
-        <div className="rounded-xl border border-sun/40 bg-sun/[0.07] p-4 text-sm leading-relaxed">
-          <p className="font-semibold text-sun">Still locked for {fmtDuration(Number(s.user.unlockAt) - now / 1000)}</p>
+        <div className="notice notice-blue">
+          <p className="font-semibold">Still locked for {fmtDuration(Number(s.user.unlockAt) - now / 1000)}</p>
           <p className="mt-1 text-mist">
             Withdrawing now costs a {fmtPct(Number(s.user.exitFeeBps))} early-exit penalty, which goes to the reward reserve.
             It unlocks on {fmtDate(s.user.unlockAt)}.
@@ -340,8 +331,8 @@ function WithdrawForm({ s, address, isTerm, isSp }: { s: StrategyView; address: 
         </div>
       )}
       {limitedByPool && (
-        <div className="rounded-xl border border-coral/40 bg-coral/[0.07] p-4 text-sm leading-relaxed">
-          <p className="font-semibold text-coral">Stability Pool withdrawals are paused</p>
+        <div className="notice">
+          <p className="font-semibold">Stability Pool withdrawals are paused</p>
           <p className="mt-1 text-mist">
             A trove is below 110% collateral, so Mezo&apos;s Stability Pool is holding funds. You can still take out up to the
             vault&apos;s idle buffer.
@@ -352,7 +343,7 @@ function WithdrawForm({ s, address, isTerm, isSp }: { s: StrategyView; address: 
         <p className="text-sm text-silt">Part of your position can&apos;t be withdrawn right now because of available liquidity.</p>
       )}
 
-      <dl className="grid gap-2 rounded-xl bg-trench/60 p-4">
+      <dl className="grid gap-2 rounded-lg bg-trench p-4">
         <Row label={locked ? "Early-exit penalty" : "Exit fee"}>{ok ? `${fmtAmount(fee)} MUSD` : fmtPct(Number(s.user.exitFeeBps))}</Row>
         <Row label="You receive">{ok ? `${fmtAmount(receive)} MUSD` : "—"}</Row>
         {isSp && s.user.pendingBtc > 0n && <Row label="BTC to claim separately">{fmtBtc(s.user.pendingBtc)} BTC</Row>}
@@ -366,14 +357,14 @@ function WithdrawForm({ s, address, isTerm, isSp }: { s: StrategyView; address: 
   );
 }
 
-function ClaimForm({ s, onDone }: { s: StrategyView; onDone: () => void }) {
+function ClaimForm({ s }: { s: StrategyView }) {
   const { run, busy } = useTx();
   const { health } = useSpHealth();
   const pending = s.user.pendingBtc;
   const usd = toNum(pending) * toNum(health?.btcPrice);
   return (
     <div className="grid gap-4">
-      <div className="rounded-xl border border-ember/30 bg-ember/[0.06] p-5">
+      <div className="rounded-lg border border-black p-5">
         <p className="text-sm text-silt">BTC from liquidations, ready to claim</p>
         <p className="mt-1 text-3xl font-bold tracking-tight tabular text-ember">{fmtBtc(pending)}</p>
         <p className="text-sm text-silt">
@@ -389,14 +380,13 @@ function ClaimForm({ s, onDone }: { s: StrategyView; onDone: () => void }) {
         className="btn btn-ember btn-lg w-full"
         disabled={pending === 0n || !!busy}
         onClick={async () => {
-          const res = await run([
+          await run([
             {
               title: "Claiming BTC",
               done: `Claimed ${fmtBtc(pending)} BTC`,
               request: { address: ADDR.sp, abi: spVaultAbi, functionName: "claimBtc" },
             },
           ]);
-          if (res) onDone();
         }}
       >
         {busy ? <span className="spinner" /> : null}

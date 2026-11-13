@@ -8,12 +8,23 @@ import {
   spVaultAbi,
   termVaultAbi,
   vaultAbi,
+  zapAbi,
 } from "./contracts";
 import { fmtDuration } from "./format";
 
 /** Every custom error from every MezoFlow contract, appended to any ABI we call so that
  * reverts bubbling up from nested calls (e.g. allocator → vault) still decode. */
-const all = [...vaultAbi, ...termVaultAbi, ...spVaultAbi, ...allocatorAbi, ...faucetAbi, ...ledgerAbi, ...registryAbi, ...alertCenterAbi];
+const all = [
+  ...vaultAbi,
+  ...termVaultAbi,
+  ...spVaultAbi,
+  ...allocatorAbi,
+  ...faucetAbi,
+  ...ledgerAbi,
+  ...registryAbi,
+  ...alertCenterAbi,
+  ...zapAbi,
+];
 const seen = new Set<string>();
 export const errorsAbi = all.filter((x) => {
   if (x.type !== "error") return false;
@@ -61,7 +72,7 @@ export function explainError(e: unknown): string {
           return `You've already claimed from the faucet. Try again in ${fmtDuration(wait)}.`;
         }
         case "FaucetEmpty":
-          return "The test faucet is empty right now. Get MUSD by borrowing on the Mezo testnet app instead.";
+          return "The test faucet is empty right now. Swap a little testnet BTC for MUSD on the Get MUSD page instead.";
         case "InactiveVault":
           return "One of the selected strategies is not accepting allocations right now.";
         case "WeightsTooHigh":
@@ -70,12 +81,31 @@ export function explainError(e: unknown): string {
           return "That preset is no longer offered.";
         case "NothingAllocated":
           return "Nothing would be allocated with this amount and split.";
+        case "UnknownVault":
+          return "That position isn't in a MezoFlow vault.";
+        case "UnknownPreset":
+          return "That preset doesn't exist.";
+        case "NotRouter":
+          return "Only MezoFlow's swap contract can allocate on someone's behalf.";
+        case "ThirdPartyDeposit":
+          return "Term Savings only accepts deposits into your own position, so nobody can extend your lock.";
+        case "PermitFailed":
+          return "The permit signature wasn't accepted. It may have expired; sign again.";
+        case "InvalidRoute":
+          return "That swap route isn't supported. Swaps must go through Mezo Pools and end in MUSD.";
+        case "InsufficientOutput":
+          return "The price moved more than your slippage limit. Get a fresh quote and try again.";
+        case "SafeERC20FailedOperation":
+          return "A token transfer failed. Check your balance and try again.";
         default:
           if (name) return `The contract rejected this transaction (${name}).`;
           if (reverted.reason) return reverted.reason;
       }
     }
     const msg = (e.details || e.shortMessage || "").toLowerCase();
+    if (msg.includes("insufficient_output") || msg.includes("insufficientoutput"))
+      return "The price moved more than your slippage limit. Get a fresh quote and try again.";
+    if (msg.includes("expired")) return "The quote or signature expired. Try again.";
     if (msg.includes("insufficient funds"))
       return "You need a little testnet BTC for gas. Get some from faucet.test.mezo.org.";
     if (msg.includes("chain") && msg.includes("mismatch")) return "Switch your wallet to Mezo Testnet and try again.";
