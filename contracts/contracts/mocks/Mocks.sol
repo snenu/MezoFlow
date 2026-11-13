@@ -128,3 +128,17 @@ contract MockStabilityPool {
         return total;
     }
 }
+
+/// @dev Attacker-controlled contract that pretends to be an ERC-4626 vault. Used by the
+/// audit proof-of-concept tests only.
+contract FakeVault {
+    uint256 public fakeAssets;
+
+    function setFakeAssets(uint256 v) external {
+        fakeAssets = v;
+    }
+
+    function redeem(uint256, address, address) external view returns (uint256) {
+        return fakeAssets;
+    }
+}

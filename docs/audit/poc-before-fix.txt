@@ -1,0 +1,95 @@
+Compiled 1 Solidity file successfully (evm target: london).
+
+
+  Audit PoCs (regression)
+    1) F-01 a stranger cannot extend someone else's Term lock by depositing for them
+    2) F-02 donating MUSD cannot inflate the share price to rob the next depositor
+    3) F-03 a donation cannot inflate the reward drip paid from the reserve
+    4) F-04 reallocate rejects unregistered vaults and never pays out more than it redeemed
+    5) F-05 raising the early-exit penalty does not hit people already locked
+    6) F-06 a withdrawal-fee increase cannot front-run exits (it is time-locked)
+    7) F-07 transferring Stability Pool shares keeps the sender's earned BTC
+    8) F-08 ERC-4626 previews never promise more than a locked holder receives
+    9) F-09 the activity ledger refuses amounts that would be silently truncated
+    10) F-10 announcements reject an unknown severity level
+
+
+  0 passing (2s)
+  10 failing
+
+  1) Audit PoCs (regression)
+       F-01 a stranger cannot extend someone else's Term lock by depositing for them:
+     AssertionError: Expected transaction to be reverted
+      at Context.<anonymous> (test\Security.test.js:18:5)
+
+  2) Audit PoCs (regression)
+       F-02 donating MUSD cannot inflate the share price to rob the next depositor:
+     AssertionError: expected 125000000214041095891 to be close to 150000000000000000000 +/- 10000000000000000
+      at Context.<anonymous> (test\Security.test.js:34:31)
+
+  3) Audit PoCs (regression)
+       F-03 a donation cannot inflate the reward drip paid from the reserve:
+
+      AssertionError: expected 37356193207762557077 to be below 400000000000000000.
+      + expected - actual
+
+      -37356193207762557077
+      +400000000000000000
+      
+      at Context.<anonymous> (test\Security.test.js:45:49)
+
+  4) Audit PoCs (regression)
+       F-04 reallocate rejects unregistered vaults and never pays out more than it redeemed:
+     AssertionError: Expected transaction to be reverted
+      at Context.<anonymous> (test\Security.test.js:54:5)
+
+  5) Audit PoCs (regression)
+       F-05 raising the early-exit penalty does not hit people already locked:
+
+      AssertionError: expected 952380957212920683239 to be above 985000000000000000000.
+      + expected - actual
+
+      -952380957212920683239
+      +985000000000000000000
+      
+      at Context.<anonymous> (test\Security.test.js:69:23)
+
+  6) Audit PoCs (regression)
+       F-06 a withdrawal-fee increase cannot front-run exits (it is time-locked):
+
+      AssertionError: expected 1000000000000000000 to be at most 50000000000000000.
+      + expected - actual
+
+      -1000000000000000000
+      +50000000000000000
+      
+      at Context.<anonymous> (test\Security.test.js:81:30)
+
+  7) Audit PoCs (regression)
+       F-07 transferring Stability Pool shares keeps the sender's earned BTC:
+     AssertionError: expected 0 to be close to 1000000000000000000 +/- 1000000000000
+      at Context.<anonymous> (test\Security.test.js:91:47)
+
+  8) Audit PoCs (regression)
+       F-08 ERC-4626 previews never promise more than a locked holder receives:
+
+      AssertionError: expected 1000000000000000000000 to be at most 985221677376141240098.
+      + expected - actual
+
+      -1000000000000000000000
+      +985221677376141240098
+      
+      at Context.<anonymous> (test\Security.test.js:105:27)
+
+  9) Audit PoCs (regression)
+       F-09 the activity ledger refuses amounts that would be silently truncated:
+     AssertionError: Expected transaction to be reverted
+      at Context.<anonymous> (test\Security.test.js:112:5)
+
+  10) Audit PoCs (regression)
+       F-10 announcements reject an unknown severity level:
+     AssertionError: Expected transaction to be reverted
+      at Context.<anonymous> (test\Security.test.js:117:5)
+
+
+
