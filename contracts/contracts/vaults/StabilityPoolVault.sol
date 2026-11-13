@@ -106,8 +106,7 @@ contract StabilityPoolVault is MezoFlowVault {
     // ---------------------------------------------------------------------
 
     function _idle() internal view returns (uint256) {
-        uint256 bal = _musd.balanceOf(address(this));
-        return bal > rewardReserve ? bal - rewardReserve : 0;
+        return idleAssets;
     }
 
     function _poolDeposit() internal view returns (uint256) {
@@ -144,10 +143,13 @@ contract StabilityPoolVault is MezoFlowVault {
     }
 
     function _ensureLiquidity(uint256 amount) internal override {
-        uint256 idle = _idle();
+        uint256 idle = idleAssets;
         if (idle >= amount) return;
         if (!withdrawalsOpen()) revert SPWithdrawalsLocked();
+        uint256 before = _musd.balanceOf(address(this));
         stabilityPool.withdrawFromSP(amount - idle);
+        // Credit exactly what the pool sent back.
+        idleAssets += _musd.balanceOf(address(this)) - before;
         _syncBtc();
     }
 
@@ -160,6 +162,7 @@ contract StabilityPoolVault is MezoFlowVault {
         uint256 target = (idle + _poolDeposit()).mulDiv(bufferBps, BPS);
         if (idle > target) {
             uint256 amount = idle - target;
+            idleAssets = idle - amount;
             stabilityPool.provideToSP(amount);
             _syncBtc();
             emit Rebalanced(amount, _idle());

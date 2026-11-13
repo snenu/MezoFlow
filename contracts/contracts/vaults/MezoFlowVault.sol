@@ -39,6 +39,10 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
     IFeeManager public immutable feeManager;
     IERC20 internal immutable _musd;
 
+    /// @notice MUSD owned by shareholders that is held by this contract. Tracked
+    /// internally (never read from balanceOf) so a direct MUSD transfer cannot move the
+    /// share price or the reward drip. Stray MUSD can be swept into the reserve by `skim`.
+    uint256 public idleAssets;
     uint256 public rewardReserve;
     uint16 public rateBps;
     uint64 public lastAccrual;
@@ -61,6 +65,7 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
     event MinDepositUpdated(uint256 minDeposit);
     event ExitFeeCharged(address indexed owner, uint256 fee, bool toReserve);
     event CheckpointRecorded(uint64 timestamp, uint256 sharePrice);
+    event Skimmed(uint256 amount);
 
     error BelowMinDeposit(uint256 minDeposit);
     error ZeroShares();
@@ -97,8 +102,7 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
     /// @dev Assets owned by depositors right now, excluding the reward reserve and
     /// excluding reserve rewards that have not been accrued yet.
     function _managedAssets() internal view virtual returns (uint256) {
-        uint256 bal = _musd.balanceOf(address(this));
-        return bal > rewardReserve ? bal - rewardReserve : 0;
+        return idleAssets;
     }
 
     /// @dev Assets that can be paid out to exiting users right now (gross).
@@ -147,6 +151,7 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
         uint256 drip = _pendingDrip();
         if (drip > 0) {
             rewardReserve -= drip;
+            idleAssets += drip;
             totalRewardsPaid += drip;
             emit RewardsAccrued(drip);
         }
@@ -169,9 +174,22 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
         _accrue();
         if (amount > rewardReserve) revert InsufficientReserve();
         rewardReserve -= amount;
-        _ensureLiquidity(amount);
+        // The reserve is always held idle by the vault, never deployed to a strategy.
         _musd.safeTransfer(to, amount);
         emit ReserveWithdrawn(to, amount);
+    }
+
+    /// @notice Sweep MUSD sent to the vault without a deposit into the reward reserve,
+    /// where it is paid out to shareholders over time. Callable by anyone.
+    function skim() external nonReentrant returns (uint256 excess) {
+        _accrue();
+        uint256 bal = _musd.balanceOf(address(this));
+        uint256 owed = idleAssets + rewardReserve;
+        if (bal > owed) {
+            excess = bal - owed;
+            rewardReserve += excess;
+            emit Skimmed(excess);
+        }
     }
 
     function setRate(uint16 newRateBps) external onlyOwner {
@@ -313,6 +331,7 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
         if (shares == 0) revert ZeroShares();
         _beforeDepositMint(receiver, shares);
         super._deposit(caller, receiver, assets, shares);
+        idleAssets += assets;
         _afterDeposit(assets);
 
         cumulativeDeposits += assets;
@@ -338,6 +357,7 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
         _burn(owner, shares);
 
         _ensureLiquidity(assets + fee);
+        idleAssets -= assets + fee;
         _musd.safeTransfer(receiver, assets);
 
         if (fee > 0) {
