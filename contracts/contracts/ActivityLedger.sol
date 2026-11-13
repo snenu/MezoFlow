@@ -2,12 +2,15 @@
 pragma solidity 0.8.28;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import {SafeCast} from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 
 /// @title ActivityLedger
 /// @notice Append-only on-chain record of every MezoFlow user action. Vaults, the
 /// allocator and the faucet write to it; the app reads history, totals and the
 /// global activity feed straight from here, so no off-chain indexer is needed.
 contract ActivityLedger is Ownable {
+    using SafeCast for uint256;
+
     uint8 public constant KIND_DEPOSIT = 0;
     uint8 public constant KIND_WITHDRAW = 1;
     uint8 public constant KIND_ALLOCATE = 2;
@@ -17,6 +20,7 @@ contract ActivityLedger is Ownable {
     uint8 public constant KIND_TRANSFER_OUT = 6;
     uint8 public constant KIND_FAUCET = 7;
     uint8 public constant KIND_REALLOCATE = 8;
+    uint8 public constant KIND_SWAP = 9;
 
     struct Entry {
         uint64 timestamp;
@@ -84,9 +88,9 @@ contract ActivityLedger is Ownable {
                 kind: kind,
                 vault: vault,
                 user: user,
-                assets: uint128(assets),
-                shares: uint128(shares),
-                fee: uint128(fee)
+                assets: assets.toUint128(),
+                shares: shares.toUint128(),
+                fee: fee.toUint128()
             })
         );
         _userEntries[user].push(id);
@@ -98,14 +102,14 @@ contract ActivityLedger is Ownable {
         }
         t.actions += 1;
         if (kind == KIND_DEPOSIT) {
-            t.deposited += uint128(assets);
+            t.deposited += assets.toUint128();
             globalDeposited += assets;
         } else if (kind == KIND_WITHDRAW || kind == KIND_EARLY_EXIT) {
-            t.withdrawn += uint128(assets);
+            t.withdrawn += assets.toUint128();
             globalWithdrawn += assets;
         }
         if (fee > 0 && kind != KIND_CLAIM_BTC) {
-            t.fees += uint128(fee);
+            t.fees += fee.toUint128();
             globalFees += fee;
         }
 

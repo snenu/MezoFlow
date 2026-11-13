@@ -43,6 +43,7 @@ contract StrategyRegistry is Ownable {
     error AlreadyRegistered();
     error UnknownStrategy();
     error InvalidRisk();
+    error InvalidSeverity();
 
     constructor(address owner_) Ownable(owner_) {}
 
@@ -108,6 +109,7 @@ contract StrategyRegistry is Ownable {
         string calldata body
     ) external onlyOwner returns (uint256 id) {
         if (strategyId != GLOBAL && strategyId >= _strategies.length) revert UnknownStrategy();
+        if (severity > 3) revert InvalidSeverity();
         id = _announcements.length;
         _announcements.push(Announcement(uint64(block.timestamp), severity, strategyId, title, body));
         emit AnnouncementPosted(id, strategyId, severity, title);
