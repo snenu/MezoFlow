@@ -30,3 +30,5 @@ Thumbs.db
 
 # local dev chain output
 deployments/local.json
+e2e/out/
+deployments/e2e-browser-local.json

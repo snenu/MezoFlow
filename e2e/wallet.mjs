@@ -20,13 +20,17 @@ export async function attachWallet(page, { key, rpc, log = () => {} }) {
   const pub = createPublicClient({ chain, transport: http(rpc) });
   const wallet = createWalletClient({ chain, account, transport: http(rpc) });
   const sent = [];
+  // Like a real wallet: no accounts are exposed until the site asks to connect.
+  let authorized = false;
 
   await page.exposeFunction("__e2eWallet", async (method, params) => {
     try {
       switch (method) {
         case "eth_requestAccounts":
-        case "eth_accounts":
+          authorized = true;
           return [account.address];
+        case "eth_accounts":
+          return authorized ? [account.address] : [];
         case "eth_chainId":
           return numberToHex(31611);
         case "net_version":
