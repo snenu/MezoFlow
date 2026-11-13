@@ -34,3 +34,24 @@ interface ITroveManager {
 
     function getTCR(uint256 price) external view returns (uint256);
 }
+
+/// @notice Mezo Pools router (Velodrome/Aerodrome-style AMM).
+/// Docs: mezo.org/docs/developers/features/mezo-pools
+interface IMezoRouter {
+    struct Route {
+        address from;
+        address to;
+        bool stable;
+        address factory;
+    }
+
+    function getAmountsOut(uint256 amountIn, Route[] calldata routes) external view returns (uint256[] memory amounts);
+
+    function swapExactTokensForTokens(
+        uint256 amountIn,
+        uint256 amountOutMin,
+        Route[] calldata routes,
+        address to,
+        uint256 deadline
+    ) external returns (uint256[] memory amounts);
+}

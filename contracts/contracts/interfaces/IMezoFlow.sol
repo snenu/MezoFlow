@@ -70,3 +70,7 @@ interface IMezoFlowVault {
 
     function userInfo(address user) external view returns (UserInfo memory);
 }
+
+interface IAutoAllocator {
+    function allocatePresetFor(uint256 amount, uint256 presetId, address beneficiary) external returns (uint256);
+}

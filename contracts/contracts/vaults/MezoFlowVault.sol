@@ -4,6 +4,7 @@ pragma solidity 0.8.28;
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {ERC4626} from "@openzeppelin/contracts/token/ERC20/extensions/ERC4626.sol";
+import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
@@ -11,6 +12,7 @@ import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
 import {IActivityLedger, IFeeManager, IMezoFlowVault} from "../interfaces/IMezoFlow.sol";
+import {SafePermit, PermitSig} from "../libraries/SafePermit.sol";
 
 /// @title MezoFlowVault
 /// @notice Base ERC-4626 MUSD vault shared by every MezoFlow strategy.
@@ -21,7 +23,11 @@ import {IActivityLedger, IFeeManager, IMezoFlowVault} from "../interfaces/IMezoF
 /// calling `fundReserve`. Nothing is promised beyond what the reserve holds on-chain.
 ///
 /// Deposits can be paused in an emergency; withdrawals can never be paused.
-abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, IMezoFlowVault {
+///
+/// MUSD is pulled with EIP-2612 permits (`depositWithPermit`, `fundReserveWithPermit`), so
+/// every action is one transaction. Vault shares are EIP-2612 tokens themselves, which lets
+/// the AutoAllocator move a position with a signature instead of an approve.
+abstract contract MezoFlowVault is ERC4626, ERC20Permit, Ownable, Pausable, ReentrancyGuard, IMezoFlowVault {
     using SafeERC20 for IERC20;
     using Math for uint256;
 
@@ -81,7 +87,7 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
         IFeeManager feeManager_,
         uint16 rateBps_,
         uint256 minDeposit_
-    ) ERC20(name_, symbol_) ERC4626(musd_) Ownable(owner_) {
+    ) ERC20(name_, symbol_) ERC20Permit(name_) ERC4626(musd_) Ownable(owner_) {
         if (rateBps_ > MAX_RATE_BPS) revert RateTooHigh();
         _musd = musd_;
         ledger = ledger_;
@@ -91,6 +97,10 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
         lastAccrual = uint64(block.timestamp);
         _rateHistory.push(RatePoint(uint64(block.timestamp), rateBps_));
         _checkpoints.push(Checkpoint(uint64(block.timestamp), uint192(1e18)));
+    }
+
+    function decimals() public view virtual override(ERC20, ERC4626) returns (uint8) {
+        return super.decimals();
     }
 
     // ---------------------------------------------------------------------
@@ -169,11 +179,17 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
     }
 
     /// @notice Add MUSD to the reward reserve. Anyone can fund it.
-    function fundReserve(uint256 amount) external nonReentrant {
+    function fundReserve(uint256 amount) public nonReentrant {
         _accrue();
         _musd.safeTransferFrom(msg.sender, address(this), amount);
         rewardReserve += amount;
         emit ReserveFunded(msg.sender, amount);
+    }
+
+    /// @notice `fundReserve` with an MUSD permit — one transaction, no approve.
+    function fundReserveWithPermit(uint256 amount, PermitSig calldata sig) external {
+        SafePermit.usePermit(_musd, msg.sender, address(this), amount, sig);
+        fundReserve(amount);
     }
 
     function withdrawReserve(uint256 amount, address to) external onlyOwner nonReentrant {
@@ -237,6 +253,12 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
     function deposit(uint256 assets, address receiver) public virtual override nonReentrant returns (uint256) {
         _accrue();
         return super.deposit(assets, receiver);
+    }
+
+    /// @notice `deposit` with an MUSD permit — one transaction, no approve.
+    function depositWithPermit(uint256 assets, address receiver, PermitSig calldata sig) external returns (uint256) {
+        SafePermit.usePermit(_musd, msg.sender, address(this), assets, sig);
+        return deposit(assets, receiver);
     }
 
     function mint(uint256 shares, address receiver) public virtual override nonReentrant returns (uint256) {

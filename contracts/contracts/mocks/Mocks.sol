@@ -2,9 +2,12 @@
 pragma solidity 0.8.28;
 
 import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import {ERC20Permit} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract MockMUSD is ERC20 {
-    constructor() ERC20("Mezo USD", "MUSD") {}
+/// @dev MUSD stand-in with the same EIP-2612 domain as testnet MUSD ("Mezo USD", "1").
+contract MockMUSD is ERC20Permit {
+    constructor() ERC20("Mezo USD", "MUSD") ERC20Permit("Mezo USD") {}
 
     function mint(address to, uint256 amount) external {
         _mint(to, amount);
@@ -140,5 +143,63 @@ contract FakeVault {
 
     function redeem(uint256, address, address) external view returns (uint256) {
         return fakeAssets;
+    }
+}
+
+/// @dev Stand-in for Mezo's BTC / MEZO ERC-20 precompiles (both support EIP-2612).
+contract MockToken is ERC20Permit {
+    constructor(string memory name_, string memory symbol_) ERC20(name_, symbol_) ERC20Permit(name_) {}
+
+    function mint(address to, uint256 amount) external {
+        _mint(to, amount);
+    }
+}
+
+interface IMintable {
+    function mint(address to, uint256 amount) external;
+}
+
+/// @dev Minimal Mezo Pools router: fixed rates, pulls the input token and mints output.
+contract MockRouter {
+    struct Route {
+        address from;
+        address to;
+        bool stable;
+        address factory;
+    }
+
+    address public immutable factory;
+    mapping(address => mapping(address => uint256)) public rate; // 1e18 = 1:1
+
+    constructor(address factory_) {
+        factory = factory_;
+    }
+
+    function setRate(address from, address to, uint256 r) external {
+        rate[from][to] = r;
+    }
+
+    function getAmountsOut(uint256 amountIn, Route[] calldata routes) public view returns (uint256[] memory amounts) {
+        amounts = new uint256[](routes.length + 1);
+        amounts[0] = amountIn;
+        for (uint256 i = 0; i < routes.length; i++) {
+            require(routes[i].factory == factory, "Router: bad factory");
+            amounts[i + 1] = (amounts[i] * rate[routes[i].from][routes[i].to]) / 1e18;
+        }
+    }
+
+    function swapExactTokensForTokens(
+        uint256 amountIn,
+        uint256 amountOutMin,
+        Route[] calldata routes,
+        address to,
+        uint256 deadline
+    ) external returns (uint256[] memory amounts) {
+        require(block.timestamp <= deadline, "Router: EXPIRED");
+        amounts = getAmountsOut(amountIn, routes);
+        uint256 out = amounts[amounts.length - 1];
+        require(out >= amountOutMin, "Router: INSUFFICIENT_OUTPUT_AMOUNT");
+        IERC20(routes[0].from).transferFrom(msg.sender, address(this), amountIn);
+        IMintable(routes[routes.length - 1].to).mint(to, out);
     }
 }
