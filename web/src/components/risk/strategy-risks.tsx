@@ -58,7 +58,7 @@ export function StrategyRiskCard({ s }: { s: StrategyView }) {
           )}
         </div>
 
-        <dl className="grid content-start gap-4 rounded-[14px] bg-trench/60 p-4 text-sm">
+        <dl className="grid content-start gap-4 rounded-lg bg-trench/60 p-4 text-sm">
           <div>
             <dt className="text-silt">Withdrawal conditions</dt>
             <dd className="mt-1 leading-relaxed">{s.meta.liquidityTerms}</dd>

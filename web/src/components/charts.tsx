@@ -109,7 +109,7 @@ export function LineChart({
   return (
     <div ref={ref} className="relative w-full select-none" style={{ height }}>
       {!model ? (
-        <div className="grid h-full place-items-center rounded-xl border border-dashed border-shoal text-sm text-silt">
+        <div className="grid h-full place-items-center rounded-lg border border-dashed border-shoal text-sm text-silt">
           {emptyText}
         </div>
       ) : (

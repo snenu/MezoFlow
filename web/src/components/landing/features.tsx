@@ -24,15 +24,15 @@ function Row({
   children: ReactNode;
 }) {
   return (
-    <div className="grid items-center gap-10 py-14 md:grid-cols-[5fr_7fr] md:gap-16">
-      <div className={flip ? "md:order-2" : ""}>
+    <div className="grid grid-cols-[minmax(0,1fr)] items-center gap-10 py-14 md:grid-cols-[5fr_7fr] md:gap-16">
+      <div className={`min-w-0 ${flip ? "md:order-2" : ""}`}>
         <h3 className="text-[clamp(1.5rem,1.1rem+1.3vw,2.1rem)] font-bold leading-[1.1] tracking-[-0.03em]">{title}</h3>
         <div className="mt-4 max-w-[46ch] text-[1.02rem] leading-relaxed text-mist">{body}</div>
         <Link href={href} className="link mt-6 inline-block font-medium">
           {cta}
         </Link>
       </div>
-      <div className={`stage p-6 sm:p-8 ${flip ? "md:order-1" : ""}`}>{children}</div>
+      <div className={`stage min-w-0 p-5 sm:p-8 ${flip ? "md:order-1" : ""}`}>{children}</div>
     </div>
   );
 }
@@ -43,7 +43,7 @@ function PlansFragment() {
   const name = (v: string) => strategies.find((s) => s.meta.vault.toLowerCase() === v.toLowerCase())?.meta.name ?? "";
   if (!presets) return <Skel w="100%" h="10rem" />;
   return (
-    <ul className="grid gap-6" aria-label="Allocator plans stored on-chain">
+    <ul className="grid grid-cols-1 gap-6" aria-label="Allocator plans stored on-chain">
       {presets.map((p) => {
         const used = p.weightsBps.reduce((a, b) => a + Number(b), 0);
         const parts = [
@@ -144,8 +144,8 @@ function AnswersFragment() {
         ))}
       </ul>
       <div className="grid gap-2 text-sm">
-        <p className="ml-auto max-w-[80%] rounded-2xl rounded-br-md bg-tide px-4 py-2.5 text-white">Is it safe to withdraw from the Stability Pool now?</p>
-        <p className="max-w-[92%] rounded-2xl rounded-bl-md bg-white px-4 py-2.5 leading-relaxed text-mist">
+        <p className="ml-auto max-w-[80%] rounded-lg rounded-br-md bg-tide px-4 py-2.5 text-white">Is it safe to withdraw from the Stability Pool now?</p>
+        <p className="max-w-[92%] rounded-lg rounded-bl-md bg-white px-4 py-2.5 leading-relaxed text-mist">
           {health
             ? health.withdrawalsOpen
               ? `Yes. Withdrawals are open and the weakest trove is at ${(toNum(health.lowestIcr) * 100).toFixed(1)}%. I read that from Mezo's TroveManager just now.`
@@ -219,7 +219,7 @@ const FAQ: [string, ReactNode][] = [
   ],
   [
     "Can I lose money?",
-    "Yes. The Stability Pool converts some MUSD into BTC during liquidations, and BTC can fall. Leaving Term Savings early costs 1.5%. And the contracts are new and unaudited. The risk dashboard spells out each case.",
+    "Yes. The Stability Pool converts some MUSD into BTC during liquidations, and BTC can fall. Leaving Term Savings early costs 1.5%. And the contracts are new: reviewed internally, but not audited by a third party. The risk dashboard spells out each case.",
   ],
   [
     "Can I withdraw at any time?",

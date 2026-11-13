@@ -12,11 +12,12 @@ export function Mark({ size = 28 }: { size?: number }) {
   );
 }
 
-export function Logo({ href = "/" }: { href?: string }) {
+export function Logo({ href = "/", compact = false }: { href?: string; compact?: boolean }) {
   return (
-    <Link href={href} className="semi-wide inline-flex items-center gap-2.5 text-[1.075rem] font-bold tracking-tight">
+    <Link href={href} className="semi-wide inline-flex items-center gap-2.5 text-[1.075rem] font-bold tracking-tight" aria-label="MezoFlow home">
       <Mark />
-      <span>MezoFlow</span>
+      {/* In the app header on narrow phones only the mark shows, so the wallet button fits. */}
+      <span className={compact ? "max-[440px]:hidden" : undefined}>MezoFlow</span>
     </Link>
   );
 }

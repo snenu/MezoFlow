@@ -121,7 +121,7 @@ export function PreferencesForm({ prefs, isDefault }: { prefs: Prefs; isDefault:
           const on = (form.mask & t.bit) !== 0;
           const id = `alert-type-${t.bit}`;
           return (
-            <li key={t.bit} className="flex items-start justify-between gap-4 rounded-[10px] px-1 py-2.5">
+            <li key={t.bit} className="flex items-start justify-between gap-4 rounded-md px-1 py-2.5">
               <div className="min-w-0">
                 <p id={id} className="text-sm font-medium">
                   {t.name}

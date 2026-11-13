@@ -14,7 +14,7 @@ import { FILTERABLE_VAULTS, downloadCsv, entriesToCsv, resolveTxHashes } from ".
 
 const PAGE = 25;
 const selectCls =
-  "h-10 rounded-[10px] border border-shoal bg-trench px-3 text-sm text-foam transition-colors hover:border-reef focus-visible:border-tide";
+  "h-10 rounded-md border border-shoal bg-trench px-3 text-sm text-foam transition-colors hover:border-reef focus-visible:border-tide";
 
 function Amount({ e }: { e: LedgerEntry }) {
   if (e.kind === 3) return <>{fmtBtc(e.assets)} BTC</>;

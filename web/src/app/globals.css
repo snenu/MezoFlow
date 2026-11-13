@@ -619,3 +619,10 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Scrollable table wrappers are the positioning context for their contents, so
+   absolutely positioned sr-only labels can't widen the page on phones. */
+.overflow-x-auto,
+.overflow-auto {
+  position: relative;
+}

@@ -150,7 +150,7 @@ export default function OverviewPage() {
               <dt className="text-sm text-silt">BTC for gas</dt>
               <dd className="mt-1 font-semibold tabular">{fmtBtc(p.account?.btcBalance)} BTC</dd>
             </div>
-            <div className="rounded-xl border border-ember/30 bg-ember/[0.06] p-4">
+            <div className="rounded-lg border border-ember/30 bg-ember/[0.06] p-4">
               <dt className="text-sm text-silt">BTC earned in the Stability Pool</dt>
               <dd className="mt-1 text-lg font-semibold tabular text-ember">{p.pendingBtc.toFixed(8)} BTC</dd>
               <dd className="text-sm text-silt">

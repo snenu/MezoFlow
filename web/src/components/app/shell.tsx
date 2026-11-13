@@ -150,12 +150,12 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <div className="min-w-0">
         <header className="sticky top-0 z-30 border-b rule bg-white">
-          <div className="mx-auto flex h-16 max-w-[1240px] items-center gap-3 px-4 sm:px-8">
+          <div className="mx-auto flex h-16 max-w-[1240px] items-center gap-2 px-4 sm:gap-3 sm:px-8">
             <button className="icon-btn h-10 w-10 lg:hidden" onClick={() => setDrawer(true)} aria-label="Open menu">
               <IconMenu />
             </button>
             <div className="lg:hidden">
-              <Logo href="/" />
+              <Logo href="/" compact />
             </div>
             <div className="ml-auto flex items-center gap-2 sm:gap-3">
               <WalletBalance />

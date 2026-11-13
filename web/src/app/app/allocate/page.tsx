@@ -154,7 +154,7 @@ export default function AllocatePage() {
               {isConnected && <span className="text-sm text-silt tabular">Wallet: {fmtAmount(wallet)} MUSD</span>}
             </div>
             <div className="mt-4">
-              <AmountInput value={value} onChange={setValue} max={isConnected ? wallet : undefined} invalid={!!err} disabled={!!busy} />
+              <AmountInput id="alloc-amount" value={value} onChange={setValue} max={isConnected ? wallet : undefined} invalid={!!err} disabled={!!busy} />
               {err && (
                 <p role="alert" className="mt-2 text-sm">
                   {err}
@@ -193,7 +193,7 @@ export default function AllocatePage() {
                     aria-checked={selected}
                     onClick={() => setChoice({ kind: "preset", id: i })}
                     disabled={!p.active}
-                    className={`rounded-[14px] border p-4 text-left transition-colors ${
+                    className={`rounded-lg border p-4 text-left transition-colors ${
                       selected ? "border-tide bg-tide/[0.06]" : "border-shoal hover:border-reef"
                     }`}
                   >
@@ -225,7 +225,7 @@ export default function AllocatePage() {
                 role="radio"
                 aria-checked={choice.kind === "custom"}
                 onClick={() => setChoice({ kind: "custom" })}
-                className={`rounded-[14px] border p-4 text-left transition-colors ${
+                className={`rounded-lg border p-4 text-left transition-colors ${
                   choice.kind === "custom" ? "border-tide bg-tide/[0.06]" : "border-shoal hover:border-reef"
                 }`}
               >
@@ -306,7 +306,7 @@ export default function AllocatePage() {
               )}
             </ul>
 
-            <dl className="mt-2 grid gap-2 rounded-xl bg-trench/60 p-4 text-sm">
+            <dl className="mt-2 grid gap-2 rounded-lg bg-trench/60 p-4 text-sm">
               <div className="flex justify-between gap-4">
                 <dt className="text-silt">Expected from savings rates</dt>
                 <dd className="tabular font-medium">≈ {fmtAmount(yearly)} MUSD a year</dd>
@@ -435,7 +435,7 @@ function Reallocate({
           const k = s.meta.vault.toLowerCase();
           return (
             <li key={k}>
-              <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-shoal px-4 py-3 hover:border-reef">
+              <label className="flex cursor-pointer items-center gap-3 rounded-lg border border-shoal px-4 py-3 hover:border-reef">
                 <input
                   type="checkbox"
                   className="h-4 w-4 accent-[var(--color-tide)]"

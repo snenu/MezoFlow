@@ -137,7 +137,7 @@ export function ScenarioCalculator({ defaultPosition, btcPrice }: { defaultPosit
             value={`${fmtAmount(btcValueAfter)} MUSD`}
           />
         </dl>
-        <div className={`mt-6 rounded-[14px] border p-5 ${positive ? "border-tide/40 bg-tide/8" : "border-coral/45 bg-coral/8"}`}>
+        <div className={`mt-6 rounded-lg border p-5 ${positive ? "border-tide/40 bg-tide/8" : "border-coral/45 bg-coral/8"}`}>
           <p className="text-sm text-mist">Net result of this scenario</p>
           <p className={`mt-1 text-3xl font-bold tracking-tight tabular ${positive ? "text-tide" : "text-coral"}`}>
             {positive ? "+" : "−"}
