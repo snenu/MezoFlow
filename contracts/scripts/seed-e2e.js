@@ -22,7 +22,8 @@ function loadWallets() {
   if (fs.existsSync(WALLETS_FILE)) {
     keys = [...fs.readFileSync(WALLETS_FILE, "utf8").matchAll(/^E2E_WALLET_\d+=(0x[0-9a-fA-F]{64})$/gm)].map((m) => m[1]);
   }
-  while (keys.length < 4) keys.push(ethers.Wallet.createRandom().privateKey);
+  // 1-3: seeded personas; 4: browser e2e (e2e/e2e.mjs); 5: narrated demo (e2e/video.mjs)
+  while (keys.length < 5) keys.push(ethers.Wallet.createRandom().privateKey);
   fs.writeFileSync(WALLETS_FILE, keys.map((k, i) => `E2E_WALLET_${i + 1}=${k}`).join("\n") + "\n");
   return keys.map((k) => new ethers.Wallet(k, ethers.provider));
 }
@@ -48,7 +49,7 @@ async function main() {
   const deadline = () => BigInt(Math.floor(Date.now() / 1000) + 1200);
   const permit = (w, token, spender, v) => signPermit(w, token, spender, v);
 
-  const [ana, ben, chloe] = loadWallets();
+  const [ana, ben, chloe, browserWallet, demoWallet] = loadWallets();
   console.log("Wallets:", [ana, ben, chloe].map((w, i) => `${PERSONAS[i]} ${w.address}`).join(" | "));
 
   console.log("\nFund wallets from the deployer");
@@ -58,6 +59,12 @@ async function main() {
     }
     if ((await musd.balanceOf(w.address)) < E(20)) {
       await send(`deployer -> ${PERSONAS[i]}: 30 MUSD`, musd, "transfer", [w.address, E(30)], { floor: 120_000 });
+    }
+  }
+
+  for (const [label, wl] of [["browser e2e wallet", browserWallet], ["demo video wallet", demoWallet]]) {
+    if ((await ethers.provider.getBalance(wl.address)) < E(0.001)) {
+      await sendValue(`deployer -> ${label}: 0.0015 BTC`, deployer, wl.address, E(0.0015));
     }
   }
 
