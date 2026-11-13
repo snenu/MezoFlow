@@ -238,7 +238,7 @@ export default function StrategyPage() {
                 </li>
               ))}
             </ul>
-            <div className="mt-2 rounded-xl border border-shoal bg-trench/50 p-4">
+            <div className="mt-2 rounded-lg border border-shoal bg-trench/50 p-4">
               <p className="text-sm font-semibold">How you could lose money</p>
               <p className="mt-1 text-sm leading-relaxed text-silt">{copy.lossScenario}</p>
             </div>

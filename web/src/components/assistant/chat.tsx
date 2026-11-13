@@ -73,7 +73,7 @@ function Message({ m }: { m: UIMessage }) {
       .join("");
     return (
       <div className="flex justify-end">
-        <p className="max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-shoal px-4 py-2.5 leading-relaxed">{text}</p>
+        <p className="max-w-[85%] whitespace-pre-wrap rounded-lg rounded-br-md bg-shoal px-4 py-2.5 leading-relaxed">{text}</p>
       </div>
     );
   }
@@ -201,7 +201,7 @@ export function AssistantChat() {
                 <button
                   key={q}
                   onClick={() => ask(q)}
-                  className="rounded-xl border border-shoal bg-abyss/60 px-4 py-3 text-left text-[0.95rem] transition-colors hover:border-tide"
+                  className="rounded-lg border border-shoal bg-abyss/60 px-4 py-3 text-left text-[0.95rem] transition-colors hover:border-tide"
                 >
                   {q}
                 </button>
@@ -229,7 +229,7 @@ export function AssistantChat() {
               </div>
             )}
             {error && (
-              <div role="alert" className="rounded-xl border border-coral/40 bg-coral/10 px-4 py-3 text-sm">
+              <div role="alert" className="rounded-lg border border-coral/40 bg-coral/10 px-4 py-3 text-sm">
                 <p className="text-coral">{friendlyError(error)}</p>
                 <button
                   className="link mt-1"
@@ -252,7 +252,7 @@ export function AssistantChat() {
       </div>
 
       <form onSubmit={onSubmit} className="border-t rule p-3 sm:p-4">
-        <div className="mx-auto flex max-w-3xl items-end gap-2 rounded-2xl border border-shoal bg-trench px-3 py-2 focus-within:border-tide">
+        <div className="mx-auto flex max-w-3xl items-end gap-2 rounded-lg border border-shoal bg-trench px-3 py-2 focus-within:border-tide">
           <label htmlFor="ask-flow" className="sr-only">
             Ask Flow a question
           </label>
