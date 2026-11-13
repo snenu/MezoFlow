@@ -28,6 +28,7 @@ async function deployFixture() {
   for (const w of [flex, term, spv, allocator, faucet]) await ledger.setWriter(w, true);
   for (const v of [flex, term, spv]) await fees.setVault(v, true);
   await fees.setWithdrawalFee(spv, 10);
+  await term.setRouter(allocator, true);
 
   await registry.addStrategy(flex, 1, 1, "Flexible Savings", "flexible-savings", "MezoFlow", "s", "Instant");
   await registry.addStrategy(term, 2, 2, "Term Savings", "term-savings", "MezoFlow", "s", "7d lock");

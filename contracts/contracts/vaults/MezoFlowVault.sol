@@ -115,12 +115,18 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
 
     function _afterDeposit(uint256 assets) internal virtual {}
 
-    function _beforeDepositMint(address receiver, uint256 shares) internal virtual {}
+    function _beforeDepositMint(address caller, address receiver, uint256 shares) internal virtual {}
 
     /// @dev Exit fee in bps for `owner`, and whether it is retained by the vault's
     /// reserve (true) or sent to the treasury (false).
     function _exitFee(address /* owner */) internal view virtual returns (uint256 bps, bool toReserve) {
         return (feeManager.withdrawalFeeBps(address(this)), false);
+    }
+
+    /// @dev Fee used by the owner-agnostic ERC-4626 previews. Must be the highest fee any
+    /// holder could pay, so previews never promise more than an exit returns.
+    function _previewFeeBps() internal view virtual returns (uint256 bps) {
+        (bps, ) = _exitFee(address(0));
     }
 
     function _unlockAt(address) internal view virtual returns (uint256) {
@@ -291,13 +297,13 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
     }
 
     function previewWithdraw(uint256 assets) public view virtual override returns (uint256) {
-        (uint256 bps, ) = _exitFee(address(0));
+        uint256 bps = _previewFeeBps();
         uint256 fee = assets.mulDiv(bps, BPS, Math.Rounding.Ceil);
         return _convertToShares(assets + fee, Math.Rounding.Ceil);
     }
 
     function previewRedeem(uint256 shares) public view virtual override returns (uint256) {
-        (uint256 bps, ) = _exitFee(address(0));
+        uint256 bps = _previewFeeBps();
         uint256 gross = _convertToAssets(shares, Math.Rounding.Floor);
         return gross - gross.mulDiv(bps, BPS + bps, Math.Rounding.Ceil);
     }
@@ -329,7 +335,7 @@ abstract contract MezoFlowVault is ERC4626, Ownable, Pausable, ReentrancyGuard, 
     ) internal virtual override whenNotPaused {
         if (assets < minDeposit) revert BelowMinDeposit(minDeposit);
         if (shares == 0) revert ZeroShares();
-        _beforeDepositMint(receiver, shares);
+        _beforeDepositMint(caller, receiver, shares);
         super._deposit(caller, receiver, assets, shares);
         idleAssets += assets;
         _afterDeposit(assets);
