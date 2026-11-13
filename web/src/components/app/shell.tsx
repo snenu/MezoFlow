@@ -20,11 +20,13 @@ import {
   IconOverview,
   IconRisk,
   IconStrategies,
+  IconSwap,
 } from "./icons";
 
 const NAV = [
   { href: "/app", label: "Overview", icon: IconOverview },
   { href: "/app/strategies", label: "Strategies", icon: IconStrategies },
+  { href: "/app/swap", label: "Get MUSD", icon: IconSwap },
   { href: "/app/allocate", label: "Auto allocator", icon: IconAllocate },
   { href: "/app/risk", label: "Risk", icon: IconRisk },
   { href: "/app/activity", label: "Activity", icon: IconActivity },
@@ -48,21 +50,14 @@ function NavList({ onNavigate, path }: { onNavigate?: () => void; path: string |
               href={href}
               onNavigate={onNavigate}
               aria-current={active ? "page" : undefined}
-              className={`relative flex items-center gap-3 rounded-[10px] px-3 py-2.5 text-[0.95rem] font-medium transition-colors ${
-                active ? "bg-shoal/70 text-foam" : "text-silt hover:bg-shoal/40 hover:text-foam"
+              className={`relative flex items-center gap-3 rounded-md px-3 py-2.5 text-[0.95rem] font-medium transition-colors ${
+                active ? "bg-black text-white" : "text-mist hover:bg-trench hover:text-black"
               }`}
             >
-              {active && (
-                <motion.span
-                  layoutId="nav-current"
-                  className="absolute left-0 top-2 bottom-2 w-[3px] rounded-full bg-tide"
-                  transition={{ type: "spring", stiffness: 500, damping: 38 }}
-                />
-              )}
               <Icon />
               <span className="flex-1">{label}</span>
               {href === "/app/alerts" && unread > 0 && (
-                <span className="grid h-5 min-w-5 place-items-center rounded-full bg-coral px-1.5 text-[0.7rem] font-bold text-white">
+                <span className={`grid h-5 min-w-5 place-items-center rounded-full px-1.5 text-[0.7rem] font-bold ${active ? "bg-white text-black" : "bg-blue text-white"}`}>
                   {unread > 9 ? "9+" : unread}
                 </span>
               )}
@@ -93,7 +88,7 @@ function NetworkStatus() {
   const { data: block, isError } = useBlockNumber({ watch: { pollingInterval: 6_000 } });
   return (
     <div className="flex items-center gap-2 text-xs text-silt">
-      <span className={`h-1.5 w-1.5 rounded-full ${isError ? "bg-coral" : "live-dot bg-tide"}`} aria-hidden />
+      <span className={`h-1.5 w-1.5 rounded-full ${isError ? "bg-black" : "live-dot bg-blue"}`} aria-hidden />
       <span>
         Mezo Testnet{block ? <span className="tabular">, block {block.toLocaleString("en-US")}</span> : null}
       </span>
@@ -107,10 +102,10 @@ function WalletBalance() {
   return (
     <Link
       href="/app"
-      className="hidden items-center gap-2 rounded-[10px] border border-shoal px-3 py-2 text-sm sm:flex"
+      className="hidden items-center gap-2 rounded-md border border-shoal px-3 py-2 text-sm hover:border-black sm:flex"
       title="MUSD in your wallet"
     >
-      <span className="h-2 w-2 rounded-full bg-tide" aria-hidden />
+      <span className="h-2 w-2 rounded-full bg-blue" aria-hidden />
       <span className="tabular font-semibold">{fmtAmount(account.musdBalance)}</span>
       <span className="text-silt">MUSD</span>
     </Link>
@@ -122,7 +117,7 @@ function AlertBell() {
   return (
     <Link href="/app/alerts" className="icon-btn relative h-10 w-10" aria-label={`Alerts, ${unread} unread`}>
       <IconBell />
-      {unread > 0 && <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-coral ring-2 ring-abyss" />}
+      {unread > 0 && <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-blue ring-2 ring-white" />}
     </Link>
   );
 }
@@ -133,7 +128,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[248px_1fr]">
-      <aside className="sticky top-0 hidden h-screen flex-col border-r rule bg-trench/50 px-4 py-5 lg:flex">
+      <aside className="sticky top-0 hidden h-screen flex-col border-r rule bg-white px-4 py-5 lg:flex">
         <div className="px-2">
           <Logo href="/" />
         </div>
@@ -147,7 +142,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="min-w-0">
-        <header className="sticky top-0 z-30 border-b rule bg-abyss/85 backdrop-blur-md">
+        <header className="sticky top-0 z-30 border-b rule bg-white">
           <div className="mx-auto flex h-16 max-w-[1240px] items-center gap-3 px-4 sm:px-8">
             <button className="icon-btn h-10 w-10 lg:hidden" onClick={() => setDrawer(true)} aria-label="Open menu">
               <IconMenu />
@@ -168,7 +163,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <AnimatePresence>
         {drawer && (
           <motion.div
-            className="fixed inset-0 z-50 bg-trench/70 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-50 bg-black/50 lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -212,7 +207,7 @@ export function PageHeader({
     <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <title>{`${title} · MezoFlow`}</title>
       <div className="min-w-0">
-        <h1 className="text-[clamp(1.75rem,1.3rem+1.6vw,2.4rem)] font-bold tracking-[-0.03em] leading-tight">{title}</h1>
+        <h1 className="wide text-[clamp(1.6rem,1.2rem+1.6vw,2.3rem)] font-bold tracking-[-0.035em] leading-tight">{title}</h1>
         {description && <p className="mt-2 max-w-[62ch] text-silt leading-relaxed">{description}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}

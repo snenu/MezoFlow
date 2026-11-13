@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useAccount, useReadContract, useReadContracts } from "wagmi";
-import { erc20Abi, formatUnits, type Address } from "viem";
+import { erc20Abi, type Address } from "viem";
 import { PageHeader } from "@/components/app/shell";
 import { FaucetButton } from "@/components/app/faucet";
 import { AmountInput, Skel } from "@/components/ui";
@@ -33,7 +33,7 @@ function useDebounced<T>(value: T, ms = 350) {
 export default function SwapPage() {
   const { address, isConnected } = useAccount();
   const { open } = useWalletModal();
-  const { strategies, account } = useMezoFlow();
+  const { strategies, account, protocol } = useMezoFlow();
   const { data: presets } = usePresets();
   const { health } = useSpHealth();
   const { run, busy } = useTx();
@@ -342,7 +342,8 @@ export default function SwapPage() {
           <section className="panel p-5" aria-label="Test MUSD">
             <h2 className="font-semibold">Just want to look around?</h2>
             <p className="mt-1 text-sm text-silt">
-              The MezoFlow test faucet hands out {formatUnits(10n ** 19n, 18)} MUSD a day per address, no swap needed.
+              The MezoFlow test faucet hands out {protocol ? fmtAmount(protocol.faucetAmount, { max: 0 }) : "a few"} MUSD a day
+              per address, no swap needed.
             </p>
             <FaucetButton className="btn btn-ghost mt-3 w-full" />
             <Link href="/app/strategies" className="link mt-3 inline-block text-sm">

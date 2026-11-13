@@ -65,3 +65,8 @@ export const IconExternal = (p: SVGProps<SVGSVGElement>) => (
     <path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6" />
   </svg>
 );
+export const IconSwap = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base} {...p}>
+    <path d="M4 8h13l-3-3M20 16H7l3 3" />
+  </svg>
+);

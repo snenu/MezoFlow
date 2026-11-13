@@ -160,11 +160,11 @@ export function useNow(ms = 1000) {
 
 export function Badge({ tone = "neutral", children }: { tone?: "neutral" | "tide" | "ember" | "coral" | "sun"; children: ReactNode }) {
   const tones: Record<string, string> = {
-    neutral: "bg-shoal text-mist",
-    tide: "bg-tide/12 text-tide",
-    ember: "bg-ember/14 text-ember",
-    coral: "bg-coral/14 text-coral",
-    sun: "bg-sun/14 text-sun",
+    neutral: "bg-trench text-mist",
+    tide: "bg-blue-tint text-blue",
+    ember: "bg-black text-white",
+    coral: "bg-black text-white",
+    sun: "border border-blue text-blue",
   };
-  return <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-semibold ${tones[tone]}`}>{children}</span>;
+  return <span className={`inline-flex items-center gap-1.5 rounded px-2 py-0.5 text-xs font-semibold ${tones[tone]}`}>{children}</span>;
 }
