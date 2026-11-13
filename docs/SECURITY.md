@@ -4,15 +4,16 @@ This is an internal review of every MezoFlow contract, done before the v2 deploy
 
 - **Scope:** `contracts/contracts/` — `MezoFlowVault` (base), `FlexibleSavingsVault`, `TermVault`, `StabilityPoolVault`, `AutoAllocator`, `MezoFlowZap`, `FeeManager`, `StrategyRegistry`, `ActivityLedger`, `AlertCenter`, `MUSDFaucet`, `MezoFlowLens`, `libraries/SafePermit`.
 - **Compiler:** Solidity 0.8.28, `evmVersion: london`, optimizer 200 runs, `viaIR`. OpenZeppelin pinned to 5.1.0 (5.2+ emits `mcopy`, which Mezo does not support).
-- **Result:** 10 findings (0 critical, 0 high, 6 medium, 3 low, 1 informational), all fixed. Each has a proof-of-concept test that failed against the pre-audit code and now runs as a regression test.
-- **Tests:** 49 passing (`cd contracts && npx hardhat test`): 21 behaviour tests, 10 audit regressions, 18 tests for the new permit / zap / accounting code including a seeded invariant fuzz.
+- **Result:** 11 findings (0 critical, 0 high, 6 medium, 4 low, 1 informational), all fixed. Each has a proof-of-concept test that failed against the pre-fix code and now runs as a regression test.
+- **Tests:** 50 passing (`cd contracts && npx hardhat test`): 21 behaviour tests, 11 audit regressions, 18 tests for the new permit / zap / accounting code including a seeded invariant fuzz.
 
 ## Method
 
 1. Listed every external and public function and who may call it.
 2. Traced every money path: MUSD in (deposit, mint, fund reserve, allocate, swap), MUSD out (withdraw, redeem, reserve withdrawal, fee transfer, faucet, allocator remainder), BTC in (Stability Pool gains, swaps) and BTC out (claims).
 3. Wrote down the state each path changes and the invariant it must keep, then tried to break it: donations, rounding, reentrancy through token and BTC callbacks, caller-supplied addresses, owner front-running, transfers between holders, and permit replay or front-running.
-4. For each issue: wrote a failing test first ([`docs/audit/poc-before-fix.txt`](audit/poc-before-fix.txt) is the captured output), fixed it, and kept the test.
+4. For each issue: wrote a failing test first, fixed it, and kept the test. The captured failing output is in [`docs/audit/poc-before-fix.txt`](audit/poc-before-fix.txt) (F-01 to F-10) and [`docs/audit/poc-F-11-before-fix.txt`](audit/poc-F-11-before-fix.txt).
+5. Ran the full product end to end on a local Mezo-shaped chain and in the browser; F-11 was found that way.
 
 ## Findings
 
@@ -28,6 +29,7 @@ This is an internal review of every MezoFlow contract, done before the v2 deploy
 | F-08 | Low | TermVault | ERC-4626 previews over-promised to locked holders | Fixed |
 | F-09 | Low | ActivityLedger | Amounts were silently truncated to `uint128` | Fixed |
 | F-10 | Info | StrategyRegistry | Announcements accepted any severity value | Fixed |
+| F-11 | Low | All vaults | Rounding dust left by the last holder skewed the next depositor's share price | Fixed |
 
 ### F-01 · Medium · Anyone could extend someone else's Term lock
 
@@ -87,6 +89,12 @@ This is an internal review of every MezoFlow contract, done before the v2 deploy
 
 `announce` accepted any `uint8` severity, but the app only understands levels 0–3. Values above 3 now revert with `InvalidSeverity`.
 
+### F-11 · Low · Dust skewed the share price after a vault emptied
+
+**What happened.** When the last holder redeems, the ERC-4626 virtual-share rounding can leave 1–2 wei of assets with no shares behind them. The next depositor was then priced at 2:1 or 3:1 (the PoC shows a share price of 2.0 instead of 1.0). Nobody lost value, but every share figure the app showed was wrong. This came up in the browser end-to-end run, not in the review itself.
+
+**Fix.** When supply reaches zero, the leftover assets go to the reward reserve. The Stability Pool vault first pulls any MUSD left in Mezo's pool, while pool exits are open.
+
 ## Hardening in new v2 code
 
 These protections were built into the new permit and swap code from the start, so there is no pre-audit version to fail against. Each one has its own test.
@@ -136,8 +144,8 @@ On mainnet these powers would sit behind a multisig and a timelock. On testnet t
 ```bash
 cd contracts
 npm install
-npx hardhat test                       # 49 passing
-npx hardhat test test/Security.test.js # the 10 audit regressions
+npx hardhat test                       # 50 passing
+npx hardhat test test/Security.test.js # the 11 audit regressions
 ```
 
 To watch the proofs fail, check out the commit before the fixes (`git log --oneline -- contracts/test/Security.test.js`, the first "test(audit)" commit) and run the same file.
