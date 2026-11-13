@@ -27,3 +27,6 @@ next-env.d.ts
 Thumbs.db
 *.log
 .playwright-mcp/
+
+# local dev chain output
+deployments/local.json

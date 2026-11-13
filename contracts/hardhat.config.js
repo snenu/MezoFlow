@@ -19,6 +19,8 @@ module.exports = {
   },
   networks: {
     hardhat: {
+      // LOCAL_MEZO=1 makes `npx hardhat node` look like Mezo Testnet for local web dev.
+      chainId: process.env.LOCAL_MEZO ? 31611 : 31337,
       hardfork: "london",
       chains: { 31611: { hardforkHistory: { london: 0 } } },
     },
