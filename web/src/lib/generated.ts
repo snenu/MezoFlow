@@ -2,27 +2,33 @@
 
 export const deployment = {
   "chainId": 31611,
-  "startBlock": 16729966,
-  "deployer": "0x10ac9924a78051BdD770978740C5084205cdB628",
+  "startBlock": 0,
+  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
   "mezo": {
-    "MUSD": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
-    "StabilityPool": "0x1CCA7E410eE41739792eA0A24e00349Dd247680e",
-    "PriceFeed": "0x86bCF0841622a5dAC14A313a15f96A95421b9366",
-    "SortedTroves": "0x722E4D24FD6Ff8b0AC679450F3D91294607268fA",
-    "TroveManager": "0xE47c80e8c23f6B4A1aE41c34837a0599D5D16bb0",
-    "BorrowerOperations": "0xCdF7028ceAB81fA0C6971208e83fa7872994beE5"
+    "MUSD": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    "BTC": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+    "MEZO": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+    "StabilityPool": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+    "PriceFeed": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+    "SortedTroves": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+    "TroveManager": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+    "BorrowerOperations": "0x0000000000000000000000000000000000000000",
+    "PoolsRouter": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+    "PoolFactory": "0x4947243CC818b627A5D06d14C4eCe7398A23Ce1A",
+    "MusdBtcPool": "0x0000000000000000000000000000000000000000"
   },
   "contracts": {
-    "ActivityLedger": "0x0686dF54618A0769c27b815d01103cCDDD29382e",
-    "FeeManager": "0x1670D38659452f6F7eb64c8536E8Bd9f9b555aF4",
-    "StrategyRegistry": "0xD0B07a5372b02Ea6aFDbCe6ba32E7E5740C799c6",
-    "FlexibleSavingsVault": "0x099D2B1b662e3CFcCb95eFbaed29676ff633990f",
-    "TermVault": "0x3370ee55909893aBCBF47792065473Aa497c314b",
-    "StabilityPoolVault": "0x7fE6B061B0d5E206f8Fc9627849D419ACC2E14C1",
-    "AutoAllocator": "0xF525a47Fb77dC453454737119A5178E845CE457A",
-    "MUSDFaucet": "0x6d0F1885331e70fb585386B485a31f8548Ba8F3f",
-    "AlertCenter": "0x4aD032d5b6641F2A738f21559f2A848Fed8ca1Ed",
-    "MezoFlowLens": "0x503199B159DbAC9212Ae28A8C8E6f26E06D5002b"
+    "ActivityLedger": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+    "FeeManager": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
+    "StrategyRegistry": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+    "FlexibleSavingsVault": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+    "TermVault": "0x9A676e781A523b5d0C0e43731313A708CB607508",
+    "StabilityPoolVault": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
+    "AutoAllocator": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+    "MUSDFaucet": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
+    "AlertCenter": "0x68B1D87F95878fE05B998F19b66F4baba5De1aed",
+    "MezoFlowZap": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c",
+    "MezoFlowLens": "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d"
   }
 } as const;
 
@@ -63,6 +69,22 @@ export const activityLedgerAbi = [
       }
     ],
     "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "bits",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "SafeCastOverflowedUintDowncast",
     "type": "error"
   },
   {
@@ -220,6 +242,19 @@ export const activityLedgerAbi = [
   {
     "inputs": [],
     "name": "KIND_REALLOCATE",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "KIND_SWAP",
     "outputs": [
       {
         "internalType": "uint8",
@@ -858,6 +893,37 @@ export const feeManagerAbi = [
       {
         "indexed": false,
         "internalType": "uint16",
+        "name": "currentBps",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "newBps",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "effectiveAt",
+        "type": "uint64"
+      }
+    ],
+    "name": "WithdrawalFeeScheduled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
         "name": "oldBps",
         "type": "uint16"
       },
@@ -892,12 +958,54 @@ export const feeManagerAbi = [
   },
   {
     "inputs": [],
+    "name": "FEE_INCREASE_DELAY",
+    "outputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "MAX_WITHDRAWAL_FEE_BPS",
     "outputs": [
       {
         "internalType": "uint16",
         "name": "",
         "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "feeSchedule",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "current",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "pending",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint64",
+        "name": "effectiveAt",
+        "type": "uint64"
       }
     ],
     "stateMutability": "view",
@@ -1115,7 +1223,7 @@ export const feeManagerAbi = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "",
+        "name": "vault",
         "type": "address"
       }
     ],
@@ -1152,6 +1260,11 @@ export const strategyRegistryAbi = [
   {
     "inputs": [],
     "name": "InvalidRisk",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidSeverity",
     "type": "error"
   },
   {
@@ -1653,6 +1766,25 @@ export const strategyRegistryAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      }
+    ],
+    "name": "isRegistered",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -1808,6 +1940,33 @@ export const flexibleSavingsVaultAbi = [
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "ECDSAInvalidSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "ECDSAInvalidSignatureLength",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ECDSAInvalidSignatureS",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -1891,6 +2050,33 @@ export const flexibleSavingsVaultAbi = [
       }
     ],
     "name": "ERC20InvalidSpender",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      }
+    ],
+    "name": "ERC2612ExpiredSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "signer",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "ERC2612InvalidSigner",
     "type": "error"
   },
   {
@@ -1996,6 +2182,27 @@ export const flexibleSavingsVaultAbi = [
     "inputs": [
       {
         "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "currentNonce",
+        "type": "uint256"
+      }
+    ],
+    "name": "InvalidAccountNonce",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidShortString",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "owner",
         "type": "address"
       }
@@ -2012,6 +2219,11 @@ export const flexibleSavingsVaultAbi = [
       }
     ],
     "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PermitFailed",
     "type": "error"
   },
   {
@@ -2033,6 +2245,17 @@ export const flexibleSavingsVaultAbi = [
       }
     ],
     "name": "SafeERC20FailedOperation",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "str",
+        "type": "string"
+      }
+    ],
+    "name": "StringTooLong",
     "type": "error"
   },
   {
@@ -2113,6 +2336,12 @@ export const flexibleSavingsVaultAbi = [
       }
     ],
     "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "EIP712DomainChanged",
     "type": "event"
   },
   {
@@ -2259,6 +2488,19 @@ export const flexibleSavingsVaultAbi = [
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Skimmed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "from",
@@ -2329,6 +2571,19 @@ export const flexibleSavingsVaultAbi = [
     ],
     "name": "Withdraw",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "DOMAIN_SEPARATOR",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -2551,6 +2806,57 @@ export const flexibleSavingsVaultAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "assets",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "depositWithPermit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "depositorCount",
     "outputs": [
@@ -2558,6 +2864,49 @@ export const flexibleSavingsVaultAbi = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "eip712Domain",
+    "outputs": [
+      {
+        "internalType": "bytes1",
+        "name": "fields",
+        "type": "bytes1"
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "version",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "chainId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "verifyingContract",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "salt",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "extensions",
+        "type": "uint256[]"
       }
     ],
     "stateMutability": "view",
@@ -2598,6 +2947,46 @@ export const flexibleSavingsVaultAbi = [
       }
     ],
     "name": "fundReserve",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "fundReserveWithPermit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -2677,6 +3066,19 @@ export const flexibleSavingsVaultAbi = [
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "idleAssets",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -2848,6 +3250,25 @@ export const flexibleSavingsVaultAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "nonces",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -2878,6 +3299,49 @@ export const flexibleSavingsVaultAbi = [
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "permit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -3119,6 +3583,19 @@ export const flexibleSavingsVaultAbi = [
     ],
     "name": "setRate",
     "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "skim",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "excess",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -3501,6 +3978,33 @@ export const termVaultAbi = [
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "ECDSAInvalidSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "ECDSAInvalidSignatureLength",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ECDSAInvalidSignatureS",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -3584,6 +4088,33 @@ export const termVaultAbi = [
       }
     ],
     "name": "ERC20InvalidSpender",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      }
+    ],
+    "name": "ERC2612ExpiredSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "signer",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "ERC2612InvalidSigner",
     "type": "error"
   },
   {
@@ -3686,6 +4217,27 @@ export const termVaultAbi = [
     "type": "error"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "currentNonce",
+        "type": "uint256"
+      }
+    ],
+    "name": "InvalidAccountNonce",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidShortString",
+    "type": "error"
+  },
+  {
     "inputs": [],
     "name": "InvalidTerms",
     "type": "error"
@@ -3710,6 +4262,11 @@ export const termVaultAbi = [
       }
     ],
     "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PermitFailed",
     "type": "error"
   },
   {
@@ -3742,6 +4299,22 @@ export const termVaultAbi = [
       }
     ],
     "name": "SharesLocked",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "str",
+        "type": "string"
+      }
+    ],
+    "name": "StringTooLong",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ThirdPartyDeposit",
     "type": "error"
   },
   {
@@ -3826,6 +4399,12 @@ export const termVaultAbi = [
   },
   {
     "anonymous": false,
+    "inputs": [],
+    "name": "EIP712DomainChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [
       {
         "indexed": true,
@@ -3882,6 +4461,12 @@ export const termVaultAbi = [
         "internalType": "uint64",
         "name": "unlockAt",
         "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "penaltyBps",
+        "type": "uint16"
       }
     ],
     "name": "LockUpdated",
@@ -4008,6 +4593,38 @@ export const termVaultAbi = [
       {
         "indexed": true,
         "internalType": "address",
+        "name": "router",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "allowed",
+        "type": "bool"
+      }
+    ],
+    "name": "RouterSet",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Skimmed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
         "name": "from",
         "type": "address"
       },
@@ -4076,6 +4693,19 @@ export const termVaultAbi = [
     ],
     "name": "Withdraw",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "DOMAIN_SEPARATOR",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -4324,6 +4954,57 @@ export const termVaultAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "assets",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "depositWithPermit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "depositorCount",
     "outputs": [
@@ -4344,6 +5025,49 @@ export const termVaultAbi = [
         "internalType": "uint16",
         "name": "",
         "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "eip712Domain",
+    "outputs": [
+      {
+        "internalType": "bytes1",
+        "name": "fields",
+        "type": "bytes1"
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "version",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "chainId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "verifyingContract",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "salt",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "extensions",
+        "type": "uint256[]"
       }
     ],
     "stateMutability": "view",
@@ -4384,6 +5108,46 @@ export const termVaultAbi = [
       }
     ],
     "name": "fundReserve",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "fundReserveWithPermit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -4469,6 +5233,19 @@ export const termVaultAbi = [
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "idleAssets",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -4477,6 +5254,25 @@ export const termVaultAbi = [
       }
     ],
     "name": "isLocked",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isRouter",
     "outputs": [
       {
         "internalType": "bool",
@@ -4666,6 +5462,25 @@ export const termVaultAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "nonces",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -4696,6 +5511,87 @@ export const termVaultAbi = [
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "penaltyBpsOf",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      }
+    ],
+    "name": "penaltyFor",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "permit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -4955,6 +5851,37 @@ export const termVaultAbi = [
     ],
     "name": "setRate",
     "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "router",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "allowed",
+        "type": "bool"
+      }
+    ],
+    "name": "setRouter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "skim",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "excess",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -5371,6 +6298,33 @@ export const stabilityPoolVaultAbi = [
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "ECDSAInvalidSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "length",
+        "type": "uint256"
+      }
+    ],
+    "name": "ECDSAInvalidSignatureLength",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ECDSAInvalidSignatureS",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -5454,6 +6408,33 @@ export const stabilityPoolVaultAbi = [
       }
     ],
     "name": "ERC20InvalidSpender",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      }
+    ],
+    "name": "ERC2612ExpiredSignature",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "signer",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "ERC2612InvalidSigner",
     "type": "error"
   },
   {
@@ -5556,8 +6537,29 @@ export const stabilityPoolVaultAbi = [
     "type": "error"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "currentNonce",
+        "type": "uint256"
+      }
+    ],
+    "name": "InvalidAccountNonce",
+    "type": "error"
+  },
+  {
     "inputs": [],
     "name": "InvalidBuffer",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidShortString",
     "type": "error"
   },
   {
@@ -5589,6 +6591,11 @@ export const stabilityPoolVaultAbi = [
   },
   {
     "inputs": [],
+    "name": "PermitFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "RateTooHigh",
     "type": "error"
   },
@@ -5611,6 +6618,17 @@ export const stabilityPoolVaultAbi = [
       }
     ],
     "name": "SafeERC20FailedOperation",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "str",
+        "type": "string"
+      }
+    ],
+    "name": "StringTooLong",
     "type": "error"
   },
   {
@@ -5742,6 +6760,12 @@ export const stabilityPoolVaultAbi = [
       }
     ],
     "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "EIP712DomainChanged",
     "type": "event"
   },
   {
@@ -5907,6 +6931,19 @@ export const stabilityPoolVaultAbi = [
     "anonymous": false,
     "inputs": [
       {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Skimmed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
         "indexed": true,
         "internalType": "address",
         "name": "from",
@@ -5977,6 +7014,19 @@ export const stabilityPoolVaultAbi = [
     ],
     "name": "Withdraw",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "DOMAIN_SEPARATOR",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
     "inputs": [],
@@ -6361,6 +7411,57 @@ export const stabilityPoolVaultAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "assets",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "depositWithPermit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "depositorCount",
     "outputs": [
@@ -6368,6 +7469,49 @@ export const stabilityPoolVaultAbi = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "eip712Domain",
+    "outputs": [
+      {
+        "internalType": "bytes1",
+        "name": "fields",
+        "type": "bytes1"
+      },
+      {
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "version",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "chainId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "verifyingContract",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "salt",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "extensions",
+        "type": "uint256[]"
       }
     ],
     "stateMutability": "view",
@@ -6408,6 +7552,46 @@ export const stabilityPoolVaultAbi = [
       }
     ],
     "name": "fundReserve",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "fundReserveWithPermit",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -6487,6 +7671,19 @@ export const stabilityPoolVaultAbi = [
         "internalType": "bool",
         "name": "",
         "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "idleAssets",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -6658,6 +7855,25 @@ export const stabilityPoolVaultAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "name": "nonces",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -6707,6 +7923,49 @@ export const stabilityPoolVaultAbi = [
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "v",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "r",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "s",
+        "type": "bytes32"
+      }
+    ],
+    "name": "permit",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -6981,6 +8240,19 @@ export const stabilityPoolVaultAbi = [
     ],
     "name": "setRate",
     "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "skim",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "excess",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -7506,6 +8778,11 @@ export const autoAllocatorAbi = [
   },
   {
     "inputs": [],
+    "name": "NotRouter",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "NothingAllocated",
     "type": "error"
   },
@@ -7533,6 +8810,11 @@ export const autoAllocatorAbi = [
   },
   {
     "inputs": [],
+    "name": "PermitFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "ReentrancyGuardReentrantCall",
     "type": "error"
   },
@@ -7545,6 +8827,22 @@ export const autoAllocatorAbi = [
       }
     ],
     "name": "SafeERC20FailedOperation",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnknownPreset",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      }
+    ],
+    "name": "UnknownVault",
     "type": "error"
   },
   {
@@ -7672,6 +8970,25 @@ export const autoAllocatorAbi = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "router",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "allowed",
+        "type": "bool"
+      }
+    ],
+    "name": "RouterSet",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "CUSTOM",
     "outputs": [
@@ -7770,6 +9087,142 @@ export const autoAllocatorAbi = [
       {
         "internalType": "uint256",
         "name": "allocated",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "presetId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      }
+    ],
+    "name": "allocatePresetFor",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "allocated",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "presetId",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "allocatePresetWithPermit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address[]",
+        "name": "vaults",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint16[]",
+        "name": "weightsBps",
+        "type": "uint16[]"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "allocateWithPermit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
         "type": "uint256"
       }
     ],
@@ -7880,6 +9333,25 @@ export const autoAllocatorAbi = [
         "internalType": "struct AutoAllocator.Preset[]",
         "name": "",
         "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isRouter",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
       }
     ],
     "stateMutability": "view",
@@ -8074,6 +9546,72 @@ export const autoAllocatorAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "fromVaults",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "shares",
+        "type": "uint256[]"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig[]",
+        "name": "sigs",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "toVaults",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint16[]",
+        "name": "weightsBps",
+        "type": "uint16[]"
+      },
+      {
+        "internalType": "uint32",
+        "name": "presetId",
+        "type": "uint32"
+      }
+    ],
+    "name": "reallocateWithPermit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "registry",
     "outputs": [
@@ -8107,6 +9645,24 @@ export const autoAllocatorAbi = [
       }
     ],
     "name": "setPresetActive",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "router",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "allowed",
+        "type": "bool"
+      }
+    ],
+    "name": "setRouter",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -8749,6 +10305,778 @@ export const alertCenterAbi = [
   }
 ] as const;
 
+export const mezoFlowZapAbi = [
+  {
+    "inputs": [
+      {
+        "internalType": "contract IMezoRouter",
+        "name": "router_",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "factory_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IERC20",
+        "name": "musd_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IActivityLedger",
+        "name": "ledger_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IStrategyRegistry",
+        "name": "registry_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IAutoAllocator",
+        "name": "allocator_",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      }
+    ],
+    "name": "InactiveVault",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "out",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minOut",
+        "type": "uint256"
+      }
+    ],
+    "name": "InsufficientOutput",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidRoute",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PermitFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "ReentrancyGuardReentrantCall",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "SafeERC20FailedOperation",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "tokenIn",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountIn",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "musdOut",
+        "type": "uint256"
+      }
+    ],
+    "name": "Swapped",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "presetId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "musdIn",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "allocated",
+        "type": "uint256"
+      }
+    ],
+    "name": "ZappedIntoPreset",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "musdIn",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "shares",
+        "type": "uint256"
+      }
+    ],
+    "name": "ZappedIntoVault",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "allocator",
+    "outputs": [
+      {
+        "internalType": "contract IAutoAllocator",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "factory",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ledger",
+    "outputs": [
+      {
+        "internalType": "contract IActivityLedger",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "musd",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "stable",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IMezoRouter.Route[]",
+        "name": "routes",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountIn",
+        "type": "uint256"
+      }
+    ],
+    "name": "quote",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "registry",
+    "outputs": [
+      {
+        "internalType": "contract IStrategyRegistry",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "router",
+    "outputs": [
+      {
+        "internalType": "contract IMezoRouter",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "stable",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IMezoRouter.Route[]",
+        "name": "routes",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountIn",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minMusdOut",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      }
+    ],
+    "name": "swap",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "out",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "stable",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IMezoRouter.Route[]",
+        "name": "routes",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountIn",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minMusdOut",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "presetId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      }
+    ],
+    "name": "swapAndAllocate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "allocated",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "stable",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IMezoRouter.Route[]",
+        "name": "routes",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountIn",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minMusdOut",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "presetId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "swapAndAllocateWithPermit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "stable",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IMezoRouter.Route[]",
+        "name": "routes",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountIn",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minMusdOut",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      }
+    ],
+    "name": "swapAndDeposit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "shares",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "stable",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IMezoRouter.Route[]",
+        "name": "routes",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountIn",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minMusdOut",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "vault",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "swapAndDepositWithPermit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "swapCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "from",
+            "type": "address"
+          },
+          {
+            "internalType": "address",
+            "name": "to",
+            "type": "address"
+          },
+          {
+            "internalType": "bool",
+            "name": "stable",
+            "type": "bool"
+          },
+          {
+            "internalType": "address",
+            "name": "factory",
+            "type": "address"
+          }
+        ],
+        "internalType": "struct IMezoRouter.Route[]",
+        "name": "routes",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amountIn",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "minMusdOut",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "deadline",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint8",
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "internalType": "bytes32",
+            "name": "s",
+            "type": "bytes32"
+          }
+        ],
+        "internalType": "struct PermitSig",
+        "name": "sig",
+        "type": "tuple"
+      }
+    ],
+    "name": "swapWithPermit",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "totalMusdOut",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+] as const;
+
 export const mezoFlowLensAbi = [
   {
     "inputs": [
@@ -8781,6 +11109,21 @@ export const mezoFlowLensAbi = [
         "internalType": "address",
         "name": "allocator_",
         "type": "address"
+      },
+      {
+        "internalType": "contract MezoFlowZap",
+        "name": "zap_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IERC20",
+        "name": "btc_",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IERC20",
+        "name": "mezo_",
+        "type": "address"
       }
     ],
     "stateMutability": "nonpayable",
@@ -8792,6 +11135,19 @@ export const mezoFlowLensAbi = [
     "outputs": [
       {
         "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "btc",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
         "name": "",
         "type": "address"
       }
@@ -8886,6 +11242,36 @@ export const mezoFlowLensAbi = [
             "internalType": "uint64",
             "name": "faucetNextClaimAt",
             "type": "uint64"
+          },
+          {
+            "internalType": "uint256",
+            "name": "musdNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "btcNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mezoNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mezoBalance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "btcAllowanceToZap",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mezoAllowanceToZap",
+            "type": "uint256"
           }
         ],
         "internalType": "struct MezoFlowLens.AccountView",
@@ -8972,6 +11358,16 @@ export const mezoFlowLensAbi = [
             "internalType": "uint64",
             "name": "faucetCooldown",
             "type": "uint64"
+          },
+          {
+            "internalType": "uint256",
+            "name": "swapCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "swapMusdOut",
+            "type": "uint256"
           }
         ],
         "internalType": "struct MezoFlowLens.ProtocolView",
@@ -9175,6 +11571,11 @@ export const mezoFlowLensAbi = [
             "internalType": "uint256",
             "name": "shareAllowanceToAllocator",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shareNonce",
+            "type": "uint256"
           }
         ],
         "internalType": "struct MezoFlowLens.StrategyView[]",
@@ -9232,6 +11633,36 @@ export const mezoFlowLensAbi = [
             "internalType": "uint64",
             "name": "faucetNextClaimAt",
             "type": "uint64"
+          },
+          {
+            "internalType": "uint256",
+            "name": "musdNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "btcNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mezoNonce",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mezoBalance",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "btcAllowanceToZap",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "mezoAllowanceToZap",
+            "type": "uint256"
           }
         ],
         "internalType": "struct MezoFlowLens.AccountView",
@@ -9312,6 +11743,16 @@ export const mezoFlowLensAbi = [
             "internalType": "uint64",
             "name": "faucetCooldown",
             "type": "uint64"
+          },
+          {
+            "internalType": "uint256",
+            "name": "swapCount",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "swapMusdOut",
+            "type": "uint256"
           }
         ],
         "internalType": "struct MezoFlowLens.ProtocolView",
@@ -9529,6 +11970,11 @@ export const mezoFlowLensAbi = [
             "internalType": "uint256",
             "name": "shareAllowanceToAllocator",
             "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "shareNonce",
+            "type": "uint256"
           }
         ],
         "internalType": "struct MezoFlowLens.StrategyView[]",
@@ -9545,6 +11991,19 @@ export const mezoFlowLensAbi = [
     "outputs": [
       {
         "internalType": "contract ActivityLedger",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mezo",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
         "name": "",
         "type": "address"
       }
@@ -9571,6 +12030,19 @@ export const mezoFlowLensAbi = [
     "outputs": [
       {
         "internalType": "contract StrategyRegistry",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "zap",
+    "outputs": [
+      {
+        "internalType": "contract MezoFlowZap",
         "name": "",
         "type": "address"
       }

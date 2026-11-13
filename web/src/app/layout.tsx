@@ -1,27 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Schibsted_Grotesk } from "next/font/google";
+import { Archivo } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
-const schibsted = Schibsted_Grotesk({
-  variable: "--font-schibsted",
+// One family; the width axis does the work (expanded for figures and headlines).
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  axes: ["wdth"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mezoflow.vercel.app"),
   title: {
-    default: "MezoFlow — make your MUSD work smarter",
+    default: "MezoFlow: put your MUSD to work",
     template: "%s · MezoFlow",
   },
   description:
-    "Save, allocate and track MUSD on Mezo. Flexible and term savings vaults, Mezo's Stability Pool, an auto allocator and a fully on-chain activity ledger.",
+    "Save, allocate and track MUSD on Mezo. Savings vaults, Mezo's Stability Pool, one-transaction deposits with permits, BTC-to-MUSD swaps through Mezo Pools and a fully on-chain activity ledger.",
   applicationName: "MezoFlow",
   openGraph: {
     title: "MezoFlow",
-    description: "Make your MUSD work smarter on Mezo. Every balance, fee and transaction is read from the chain.",
+    description: "Put your MUSD to work on Mezo. Every balance, rate and transaction is read from the chain.",
     type: "website",
   },
 };
@@ -33,9 +35,10 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${schibsted.variable} h-full antialiased`}>
+    <html lang="en" className={`${archivo.variable} h-full antialiased`}>
       <body className="min-h-full">
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

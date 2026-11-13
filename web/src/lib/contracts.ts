@@ -8,6 +8,7 @@ import {
   flexibleSavingsVaultAbi,
   mezoFlowLensAbi,
   mUSDFaucetAbi,
+  mezoFlowZapAbi,
   stabilityPoolVaultAbi,
   strategyRegistryAbi,
   termVaultAbi,
@@ -29,6 +30,11 @@ export const ADDR = {
   faucet: C.MUSDFaucet as Address,
   alerts: C.AlertCenter as Address,
   lens: C.MezoFlowLens as Address,
+  zap: C.MezoFlowZap as Address,
+  btc: MEZO.BTC as Address,
+  mezo: MEZO.MEZO as Address,
+  poolsRouter: MEZO.PoolsRouter as Address,
+  poolFactory: MEZO.PoolFactory as Address,
   stabilityPool: MEZO.StabilityPool as Address,
   priceFeed: MEZO.PriceFeed as Address,
   troveManager: MEZO.TroveManager as Address,
@@ -44,6 +50,7 @@ export {
   flexibleSavingsVaultAbi as vaultAbi,
   mezoFlowLensAbi as lensAbi,
   mUSDFaucetAbi as faucetAbi,
+  mezoFlowZapAbi as zapAbi,
   stabilityPoolVaultAbi as spVaultAbi,
   strategyRegistryAbi as registryAbi,
   termVaultAbi,
@@ -68,6 +75,7 @@ export const LEDGER_KIND: Record<number, { label: string; verb: string; sign: 1 
   6: { label: "Shares sent", verb: "Sent", sign: -1 },
   7: { label: "Faucet", verb: "Claimed", sign: 0 },
   8: { label: "Reallocation", verb: "Reallocated", sign: 0 },
+  9: { label: "Swap", verb: "Swapped", sign: 0 },
 };
 
 export const RISK_LABEL: Record<number, string> = {
@@ -85,6 +93,9 @@ export function vaultName(addr: string): string {
   if (a === ADDR.sp.toLowerCase()) return "Stability Pool";
   if (a === ADDR.allocator.toLowerCase()) return "Auto Allocator";
   if (a === ADDR.faucet.toLowerCase()) return "Test faucet";
+  if (a === ADDR.zap.toLowerCase()) return "Mezo Pools swap";
+  if (a === ADDR.btc.toLowerCase()) return "BTC";
+  if (a === ADDR.mezo.toLowerCase()) return "MEZO";
   return "Contract";
 }
 
