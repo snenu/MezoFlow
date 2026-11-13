@@ -1,0 +1,16 @@
+
+
+  Audit PoCs (regression)
+    1) F-11 the last holder's rounding dust doesn't skew the next depositor's share price
+
+
+  0 passing (705ms)
+  1 failing
+
+  1) Audit PoCs (regression)
+       F-11 the last holder's rounding dust doesn't skew the next depositor's share price:
+     AssertionError: expected 2000000000000000000 to be close to 1000000000000000000 +/- 1000000000000
+      at Context.<anonymous> (test\Security.test.js:130:51)
+
+
+

@@ -116,4 +116,17 @@ describe("Audit PoCs (regression)", () => {
     const { owner, registry } = await loadFixture(deployFixture);
     await expect(registry.connect(owner).announce(ethers.MaxUint256, 9, "t", "b")).to.be.reverted;
   });
+
+  it("F-11 the last holder's rounding dust doesn't skew the next depositor's share price", async () => {
+    const { alice, bob, musd, term } = await loadFixture(deployFixture);
+    await musd.connect(alice).approve(term, E(100));
+    await term.connect(alice).deposit(E(100), alice);
+    await time.increase(8 * DAY); // unlocked, and the reserve has dripped interest
+    await term.connect(alice).redeem(await term.balanceOf(alice), alice, alice);
+    expect(await term.totalSupply()).to.equal(0n);
+    await musd.connect(bob).approve(term, E(50));
+    await term.connect(bob).deposit(E(50), bob);
+    // a fresh vault prices shares 1:1; dust must not turn that into 1:2 or 1:3
+    expect((await term.stats()).sharePrice).to.be.closeTo(E(1), E(0.000001));
+  });
 });
