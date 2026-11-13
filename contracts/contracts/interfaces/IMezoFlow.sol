@@ -20,6 +20,8 @@ interface IFeeManager {
 
 interface IStrategyRegistry {
     function isActiveVault(address vault) external view returns (bool);
+
+    function isRegistered(address vault) external view returns (bool);
 }
 
 /// @notice Shared read interface every MezoFlow vault implements.

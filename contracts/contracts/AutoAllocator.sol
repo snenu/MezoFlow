@@ -55,6 +55,7 @@ contract AutoAllocator is Ownable, ReentrancyGuard {
     error LengthMismatch();
     error WeightsTooHigh();
     error InactiveVault(address vault);
+    error UnknownVault(address vault);
     error InactivePreset();
     error NothingAllocated();
 
@@ -152,12 +153,16 @@ contract AutoAllocator is Ownable, ReentrancyGuard {
         uint16[] calldata weightsBps,
         uint32 presetId
     ) external nonReentrant returns (uint256 moved) {
-        if (fromVaults.length != shares.length) revert LengthMismatch();
+        if (fromVaults.length != shares.length || fromVaults.length == 0) revert LengthMismatch();
         _validate(toVaults, weightsBps);
+        // Only MezoFlow vaults, and only the MUSD that actually arrived, count (audit F-04).
+        uint256 before = musd.balanceOf(address(this));
         for (uint256 i = 0; i < fromVaults.length; i++) {
+            if (!registry.isRegistered(fromVaults[i])) revert UnknownVault(fromVaults[i]);
             if (shares[i] == 0) continue;
-            moved += IERC4626(fromVaults[i]).redeem(shares[i], address(this), msg.sender);
+            IERC4626(fromVaults[i]).redeem(shares[i], address(this), msg.sender);
         }
+        moved = musd.balanceOf(address(this)) - before;
         if (moved == 0) revert NothingAllocated();
         uint256 deposited = _depositSplit(moved, toVaults, weightsBps);
         uint256 returned = moved - deposited;

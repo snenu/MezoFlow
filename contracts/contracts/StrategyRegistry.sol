@@ -131,6 +131,12 @@ contract StrategyRegistry is Ownable {
         return v - 1;
     }
 
+    /// @notice True for any vault ever registered, active or retired. Exits from a
+    /// retired strategy must keep working.
+    function isRegistered(address vault) external view returns (bool) {
+        return _idPlusOne[vault] != 0;
+    }
+
     function isActiveVault(address vault) external view returns (bool) {
         uint256 v = _idPlusOne[vault];
         return v != 0 && _strategies[v - 1].active;
