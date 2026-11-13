@@ -170,7 +170,7 @@ export function RiskSection() {
           <div className="border-l-2 border-coral/70 pl-5">
             <dt className="font-semibold">Testnet, and not yet audited</dt>
             <dd className="mt-2 text-silt leading-relaxed">
-              These contracts are tested but unaudited, and they run on Mezo Testnet with test funds. Treat this as a working
+              These contracts are tested and reviewed internally, but not audited by a third party, and they run on Mezo Testnet with test funds. Treat this as a working
               preview, not a place for real savings.
             </dd>
           </div>

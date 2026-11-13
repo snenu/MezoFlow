@@ -33,7 +33,7 @@ export const STRATEGY_COPY: Record<number, StrategyCopy> = {
         name: "Smart contract",
         level: 2,
         plain:
-          "The vault is new code that has been tested but not audited. A bug could put deposits at risk.",
+          "The vault is new code that has been tested and reviewed internally, but not audited by a third party. A bug could put deposits at risk.",
       },
       {
         name: "Yield source",
@@ -65,7 +65,7 @@ export const STRATEGY_COPY: Record<number, StrategyCopy> = {
         name: "Smart contract",
         level: 2,
         plain:
-          "The vault is new code that has been tested but not audited. A bug could put deposits at risk.",
+          "The vault is new code that has been tested and reviewed internally, but not audited by a third party. A bug could put deposits at risk.",
       },
       {
         name: "Lock-up",
@@ -122,7 +122,7 @@ export const STRATEGY_COPY: Record<number, StrategyCopy> = {
       {
         name: "Smart contract",
         level: 2,
-        plain: "The MezoFlow vault wrapping the pool is new code that has been tested but not audited.",
+        plain: "The MezoFlow vault wrapping the pool is new code that has been tested and reviewed internally, but not audited by a third party.",
       },
     ],
     lossScenario:

@@ -72,7 +72,7 @@ export function Footer() {
         <div>
           <Logo />
           <p className="mt-4 max-w-[46ch] text-sm leading-relaxed text-silt">
-            MezoFlow is a testnet preview built for the Mezo ecosystem. It is not audited, holds only test funds, and does not
+            MezoFlow is a testnet preview built for the Mezo ecosystem. It has an internal security review but no third-party audit, holds only test funds, and does not
             promise any return. Always check the contracts before you deposit.
           </p>
         </div>

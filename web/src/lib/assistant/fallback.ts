@@ -142,7 +142,7 @@ export async function answerOffline(question: string, user?: Address): Promise<{
         const top = s.riskFactors?.slice().sort((a, b) => Number(b.level[0]) - Number(a.level[0]))[0];
         lines.push(`- **[${s.name}](${s.link})**, risk ${s.riskScore}: ${top ? top.explanation : s.summary}`);
       }
-      lines.push("", "All MezoFlow contracts are new, tested but **not audited**, and run on Mezo Testnet with test funds. The [risk dashboard](/app/risk) has live pool health and a loss calculator.");
+      lines.push("", "All MezoFlow contracts are new, tested and reviewed internally but **not audited by a third party**, and run on Mezo Testnet with test funds. The [risk dashboard](/app/risk) has live pool health and a loss calculator.");
       break;
     }
     case "withdraw": {
@@ -166,12 +166,13 @@ export async function answerOffline(question: string, user?: Address): Promise<{
     }
     case "getMusd": {
       lines.push(
-        "Two ways to get MUSD on Mezo Testnet:",
+        "Three ways to get MUSD on Mezo Testnet:",
         "",
-        "- **MezoFlow faucet:** 25 test MUSD per address per day. Use *Get test MUSD* in the sidebar.",
+        "- **Swap BTC or MEZO:** on [Get MUSD](/app/swap), swap through Mezo Pools into your wallet, or straight into a strategy, in one transaction.",
+        "- **MezoFlow faucet:** a little test MUSD per address per day. Use *Get test MUSD* in the sidebar.",
         "- **Borrow on Mezo:** lock testnet BTC as collateral and mint MUSD in the Mezo app.",
         "",
-        "You also need a little testnet BTC for gas from [faucet.test.mezo.org](https://faucet.test.mezo.org).",
+        "Testnet BTC and MEZO come from [faucet.test.mezo.org](https://faucet.test.mezo.org).",
       );
       break;
     }
