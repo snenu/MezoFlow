@@ -231,7 +231,7 @@ const FAQ: [string, ReactNode][] = [
   ],
   [
     "Which network is this on?",
-    "Mezo Testnet (chain 31611). You need a little testnet BTC for gas from the Mezo faucet, and you can claim 25 test MUSD from the MezoFlow faucet once a day.",
+    "Mezo Testnet (chain 31611). Get testnet BTC from the Mezo faucet, then swap some of it for MUSD on the Get MUSD page. Gas costs a tiny fraction of a cent in BTC.",
   ],
 ];
 
@@ -272,15 +272,15 @@ export function CtaBand() {
     <section className="border-t rule">
       <div className="mx-auto grid max-w-[1200px] gap-10 px-5 py-24 sm:px-10 md:grid-cols-[1.5fr_1fr] md:items-end">
         <div>
-          <h2 className="display text-[clamp(2.2rem,1.4rem+3vw,3.8rem)]">Try the whole flow with 25 test MUSD.</h2>
+          <h2 className="display text-[clamp(2.2rem,1.4rem+3vw,3.8rem)]">From the Mezo faucet to a funded vault in a minute.</h2>
           <p className="lede mt-5">
-            Connect a wallet, claim from the faucet, and deposit into a real vault on Mezo Testnet. It takes about a minute
-            {protocol ? `, and the faucet still holds ${fmtAmount(protocol.faucetBalance, { max: 0 })} MUSD` : ""}.
+            Get testnet BTC, then swap it into any strategy in one transaction. No separate approve, no second step
+            {protocol && protocol.swapCount > 0n ? `. ${protocol.swapCount.toString()} swaps have gone through MezoFlow so far` : ""}.
           </p>
         </div>
         <div className="flex flex-col gap-3 md:items-end">
-          <Link href="/app" className="btn btn-primary btn-lg w-full md:w-auto">
-            Open the app
+          <Link href="/app/swap" className="btn btn-primary btn-lg w-full md:w-auto">
+            Get MUSD with BTC
           </Link>
           <a
             href="https://faucet.test.mezo.org"
@@ -288,7 +288,7 @@ export function CtaBand() {
             rel="noreferrer"
             className="link text-sm"
           >
-            Need gas? Get testnet BTC from the Mezo faucet
+            Get testnet BTC from the Mezo faucet
           </a>
         </div>
       </div>

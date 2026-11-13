@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useAccount, useReadContract, useReadContracts } from "wagmi";
+import { useReadContract, useReadContracts } from "wagmi";
+import { useAccount } from "@/hooks/useAccount";
 import { erc20Abi, type Address } from "viem";
 import { PageHeader } from "@/components/app/shell";
 import { FaucetButton } from "@/components/app/faucet";

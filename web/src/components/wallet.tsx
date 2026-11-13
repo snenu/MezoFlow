@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useAccount, useConnect, useConnectors, useDisconnect, useSwitchChain, type Connector } from "wagmi";
+import { useConnect, useConnectors, useDisconnect, useSwitchChain, type Connector } from "wagmi";
+import { useAccount } from "@/hooks/useAccount";
 import { mezoTestnet, addressUrl } from "@/lib/chain";
 import { shortAddr } from "@/lib/format";
 import { explainError } from "@/lib/errors";

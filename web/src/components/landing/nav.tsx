@@ -24,7 +24,7 @@ export function LandingNav() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-colors duration-300 ${
-        scrolled ? "border-b rule bg-white/85 backdrop-blur-md" : "border-b border-transparent"
+        scrolled ? "border-b rule bg-white" : "border-b border-transparent bg-white"
       }`}
     >
       <nav className="mx-auto flex h-16 max-w-[1400px] items-center gap-8 px-5 sm:px-10" aria-label="Main">

@@ -1,7 +1,8 @@
 "use client";
 
 import { useLayoutEffect, useMemo, useState } from "react";
-import { useAccount, useReadContract, useReadContracts } from "wagmi";
+import { useReadContract, useReadContracts } from "wagmi";
+import { useAccount } from "@/hooks/useAccount";
 import type { Address } from "viem";
 import { AmountInput, useNow } from "@/components/ui";
 import { useWalletModal } from "@/components/wallet";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccount } from "wagmi";
+import { useAccount } from "@/hooks/useAccount";
 import { PageHeader, ConnectPrompt } from "@/components/app/shell";
 import { useMezoFlow, useSpHealth } from "@/hooks/useMezoFlow";
 import { ADDR, KIND, MEZO } from "@/lib/contracts";

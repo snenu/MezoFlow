@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEven
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { motion, useReducedMotion } from "motion/react";
-import { useAccount } from "wagmi";
+import { useAccount } from "@/hooks/useAccount";
 import { Mark } from "@/components/brand";
 import { useWalletModal } from "@/components/wallet";
 import { shortAddr } from "@/lib/format";

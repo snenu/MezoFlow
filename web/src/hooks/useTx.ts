@@ -30,6 +30,9 @@ export type TxStep = {
   /** One-transaction path: sign an EIP-2612 permit, then send `withPermit(sig)`. */
   permit?: PermitSpec;
   withPermit?: (sig: PermitSig) => TxRequest;
+  /** Same, with several permits (e.g. one per vault share token) for a single call. */
+  permits?: PermitSpec[];
+  withPermits?: (sigs: PermitSig[]) => TxRequest;
   /** Used instead when the wallet can't sign typed data (e.g. approve + plain call). */
   fallback?: TxStep[];
   gasFloor?: bigint;
@@ -156,10 +159,19 @@ export function useTx() {
         while (queue.length) {
           const step = queue.shift()!;
           let request = step.request;
-          if (step.permit && step.withPermit) {
-            setBusy(`Sign to allow ${step.permit.label}`);
+          if ((step.permit && step.withPermit) || (step.permits && step.withPermits)) {
             try {
-              request = step.withPermit(await signPermit(step.permit, address));
+              if (step.permit && step.withPermit) {
+                setBusy(`Sign to allow ${step.permit.label}`);
+                request = step.withPermit(await signPermit(step.permit, address));
+              } else {
+                const sigs: PermitSig[] = [];
+                for (const p of step.permits!) {
+                  setBusy(`Sign to allow ${p.label}`);
+                  sigs.push(await signPermit(p, address));
+                }
+                request = step.withPermits!(sigs);
+              }
             } catch (e) {
               if (isRejection(e) || !step.fallback) throw e;
               // Wallet can't sign EIP-712 data: fall back to approve + plain call.

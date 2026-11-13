@@ -9,6 +9,7 @@ import { Logo } from "@/components/brand";
 import { ConnectButton } from "@/components/wallet";
 import { useMezoFlow } from "@/hooks/useMezoFlow";
 import { useAlerts } from "@/hooks/useAlerts";
+import { useHydrated } from "@/hooks/useAccount";
 import { fmtAmount } from "@/lib/format";
 import { FaucetButton } from "./faucet";
 import {
@@ -38,8 +39,14 @@ function isActive(path: string, href: string) {
   return href === "/app" ? path === "/app" : path === href || path.startsWith(href + "/");
 }
 
-function NavList({ onNavigate, path }: { onNavigate?: () => void; path: string | null }) {
+function useUnread() {
   const { unread } = useAlerts();
+  // Read state lives in the browser, so the badge only appears after hydration.
+  return useHydrated() ? unread : 0;
+}
+
+function NavList({ onNavigate, path }: { onNavigate?: () => void; path: string | null }) {
+  const unread = useUnread();
   return (
     <ul className="grid gap-1">
       {NAV.map(({ href, label, icon: Icon }) => {
@@ -113,7 +120,7 @@ function WalletBalance() {
 }
 
 function AlertBell() {
-  const { unread } = useAlerts();
+  const unread = useUnread();
   return (
     <Link href="/app/alerts" className="icon-btn relative h-10 w-10" aria-label={`Alerts, ${unread} unread`}>
       <IconBell />

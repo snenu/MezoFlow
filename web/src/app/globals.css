@@ -147,6 +147,11 @@ body {
   .rule {
     border-color: var(--color-shoal);
   }
+  /* Quiet stage that holds a live piece of the app on the landing page. */
+  .stage {
+    background: var(--color-trench);
+    border-radius: var(--radius-panel);
+  }
 
   /* ---- controls ---- */
   .btn {

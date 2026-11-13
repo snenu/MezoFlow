@@ -135,16 +135,6 @@ export function LineChart({
               setHover(best);
             }}
           >
-            <defs>
-              {series
-                .filter((s) => s.area)
-                .map((s) => (
-                  <linearGradient key={s.key} id={`area-${s.key}`} x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor={s.color} stopOpacity="0.28" />
-                    <stop offset="100%" stopColor={s.color} stopOpacity="0" />
-                  </linearGradient>
-                ))}
-            </defs>
             {model.ticks.map((v) => (
               <g key={v}>
                 <line x1={pad.left} x2={pad.left + model.iw} y1={model.y(v)} y2={model.y(v)} stroke={CHART.grid} />
@@ -164,7 +154,8 @@ export function LineChart({
                 <path
                   key={`a-${s.key}`}
                   d={`${step(s)} V${model.y(model.lo)} H${model.x(s.points[0].t)} Z`}
-                  fill={`url(#area-${s.key})`}
+                  fill={s.color}
+                  fillOpacity={0.1}
                 />
               ) : null,
             )}
@@ -251,7 +242,7 @@ export function Legend({ items }: { items: { label: string; color: string; dashe
             className="inline-block h-0.5 w-4"
             style={
               i.dashed
-                ? { backgroundImage: `linear-gradient(90deg, ${i.color} 50%, transparent 50%)`, backgroundSize: "6px 2px" }
+                ? { borderTop: `2px dashed ${i.color}`, height: 0 }
                 : { background: i.color, height: 3, borderRadius: 2 }
             }
           />

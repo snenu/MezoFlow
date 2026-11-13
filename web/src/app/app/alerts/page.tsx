@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccount } from "wagmi";
+import { useAccount } from "@/hooks/useAccount";
 import { ConnectPrompt, PageHeader } from "@/components/app/shell";
 import { useAlerts } from "@/hooks/useAlerts";
 import { AlertFeed } from "@/components/alerts/feed";

@@ -26,6 +26,7 @@ export function useMezoFlow() {
     strategies: strategies ?? [],
     account: address ? account : undefined,
     isLoading: q.isLoading,
+    isPending: q.isPending,
     isError: q.isError,
     error: q.error,
     refetch: q.refetch,

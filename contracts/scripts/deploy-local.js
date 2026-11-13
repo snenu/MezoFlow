@@ -21,6 +21,15 @@ async function main() {
   };
   const a = (c) => c.getAddress();
 
+  // wagmi batches reads through Multicall3; copy its runtime code from Mezo Testnet.
+  const MC3 = "0xcA11bde05977b3631167028862bE2a173976CA11";
+  const res = await fetch("https://rpc.test.mezo.org", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "eth_getCode", params: [MC3, "latest"] }),
+  });
+  await ethers.provider.send("hardhat_setCode", [MC3, (await res.json()).result]);
+
   const musd = await dep("MockMUSD");
   const btc = await dep("MockToken", ["BTC", "BTC"]);
   const mezo = await dep("MockToken", ["MEZO", "MEZO"]);

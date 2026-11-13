@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccount } from "wagmi";
+import { useAccount } from "@/hooks/useAccount";
 import { useMezoFlow } from "@/hooks/useMezoFlow";
 import { useTx } from "@/hooks/useTx";
 import { ADDR, faucetAbi } from "@/lib/contracts";

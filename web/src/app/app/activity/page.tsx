@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useAccount } from "wagmi";
+import { useAccount } from "@/hooks/useAccount";
 import { ConnectPrompt, PageHeader } from "@/components/app/shell";
 import { ActivityTable } from "@/components/activity/activity-table";
 import { FaucetButton } from "@/components/app/faucet";

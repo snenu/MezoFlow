@@ -1,17 +1,15 @@
 import { ADDR } from "./contracts";
 
 /**
- * Chart palette (light theme) — validated with the dataviz six-checks script against the
- * white chart surface: lightness band, chroma floor, CVD ΔE ≥ 12.8, normal-vision
- * ΔE ≥ 15.2, contrast ≥ 3:1 all pass. Sky leads; royal, teal and violet sit next to it
- * on the hue wheel so the app stays in the sky-blue family.
+ * Chart palette inside the brand rule (blue, black, white and their mixes). Four series
+ * stay distinguishable by lightness as well as hue: blue, black, light blue, grey.
  * Fixed order; colour follows the entity, never its rank.
  */
 export const SERIES = {
-  flex: "#0B8FD0",
-  term: "#2F55D4",
-  sp: "#0A9484",
-  wallet: "#8B6BE0",
+  flex: "#1840F0",
+  term: "#000000",
+  sp: "#7B91F7",
+  wallet: "#B5B5B5",
 } as const;
 
 export function seriesForVault(addr: string): string {
@@ -24,9 +22,9 @@ export function seriesForVault(addr: string): string {
 
 /** Recessive chart chrome. */
 export const CHART = {
-  grid: "rgba(88,115,137,0.14)",
-  axis: "#587389",
-  ink: "#0b2540",
-  reference: "#33506b",
+  grid: "#ececec",
+  axis: "#595959",
+  ink: "#000000",
+  reference: "#262626",
   surface: "#ffffff",
 } as const;

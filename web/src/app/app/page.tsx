@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { useAccount } from "wagmi";
+import { useAccount } from "@/hooks/useAccount";
 import { PageHeader, ConnectPrompt } from "@/components/app/shell";
 import { FaucetButton } from "@/components/app/faucet";
 import { LineChart, Legend, StackBar, type Segment } from "@/components/charts";
@@ -86,25 +86,25 @@ export default function OverviewPage() {
       />
 
       <div className="grid gap-5 xl:grid-cols-[1.7fr_1fr]">
-        <section className="panel p-6" aria-labelledby="value-title">
-          <div className="flex flex-wrap items-start justify-between gap-4">
+        <section className="panel overflow-hidden" aria-labelledby="value-title">
+          <div className="slab flex flex-wrap items-start justify-between gap-4 p-6">
             <div>
-              <h2 id="value-title" className="label">
+              <h2 id="value-title" className="slab-muted text-sm font-medium">
                 Portfolio value
               </h2>
-              <p className="mt-2 text-[2.6rem] font-bold leading-none tracking-[-0.035em]">
-                {p.loading ? <Skel w="9rem" h="2.4rem" /> : <Ticker value={p.totalValue} format={money} />}
-                <span className="ml-2 text-lg font-semibold text-silt">MUSD</span>
+              <p className="wide mt-2 text-[clamp(2.2rem,1.6rem+2vw,3rem)] font-bold leading-none tracking-[-0.035em]">
+                {p.loading ? <span className="inline-block h-10 w-40 rounded bg-white/25 align-middle" /> : <Ticker value={p.totalValue} format={money} />}
+                <span className="slab-muted ml-2 text-lg font-semibold">MUSD</span>
               </p>
-              <p className={`mt-3 text-sm ${p.pnl >= 0 ? "text-tide" : "text-coral"}`}>
+              <p className="mt-3 text-sm">
                 <span className="font-semibold tabular">
                   {p.pnl >= 0 ? "+" : "−"}
                   {fmtAmount(Math.abs(p.pnl))} MUSD
                 </span>{" "}
-                <span className="text-silt">all-time result in MUSD, after fees</span>
+                <span className="slab-muted">all-time result in MUSD, after fees</span>
               </p>
             </div>
-            <div className="seg" role="group" aria-label="Chart range">
+            <div className="seg bg-white" role="group" aria-label="Chart range">
               {RANGES.map(([r]) => (
                 <button key={r} aria-pressed={range === r} onClick={() => setRange(r)}>
                   {r}
@@ -112,7 +112,7 @@ export default function OverviewPage() {
               ))}
             </div>
           </div>
-          <div className="mt-6">
+          <div className="px-6 pt-6">
             <LineChart
               ariaLabel="Portfolio value compared with net deposits over time"
               height={250}
@@ -125,7 +125,7 @@ export default function OverviewPage() {
               emptyText="Your value chart starts with your first deposit."
             />
           </div>
-          <div className="mt-4">
+          <div className="px-6 pb-6 pt-4">
             <Legend
               items={[
                 { label: "Portfolio value", color: SERIES.flex },

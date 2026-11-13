@@ -1,0 +1,15 @@
+{
+  "name": "mezoflow-e2e",
+  "private": true,
+  "description": "Browser end-to-end tests that drive the live MezoFlow site with real Mezo Testnet wallets",
+  "type": "module",
+  "scripts": {
+    "shots": "node shots.mjs",
+    "e2e": "node e2e.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "playwright": "^1.65.0",
+    "viem": "^2.57.19"
+  }
+}

@@ -11,10 +11,12 @@ import { KIND, MEZO } from "@/lib/contracts";
 import { STRATEGY_COPY } from "@/lib/strategy-copy";
 import { aprToApy, fmtAmount, fmtBtc, fmtDate, fmtDuration, fmtPct, fmtUsd, toNum } from "@/lib/format";
 import { seriesForVault } from "@/lib/viz";
+import { useHydrated } from "@/hooks/useAccount";
 
 export default function StrategyPage() {
   const { slug } = useParams<{ slug: string }>();
-  const { strategies, isLoading } = useMezoFlow();
+  const { strategies, isPending } = useMezoFlow();
+  const hydrated = useHydrated();
   const s = strategies.find((x) => x.meta.slug === slug);
   const { byVault } = useVaultHistory();
   const { health, btc } = useSpHealth();
@@ -40,9 +42,9 @@ export default function StrategyPage() {
     return { net };
   }, [entries, s]);
 
-  if (isLoading) {
+  if (!hydrated || (isPending && !s)) {
     return (
-      <div className="grid gap-4">
+      <div className="grid gap-4" aria-busy="true">
         <Skel w="30%" h="2rem" />
         <Skel w="60%" />
         <Skel w="100%" h="18rem" />

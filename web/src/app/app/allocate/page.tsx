@@ -3,16 +3,15 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useAccount } from "wagmi";
+import { useAccount } from "@/hooks/useAccount";
 import type { Address } from "viem";
 import { PageHeader } from "@/components/app/shell";
 import { StackBar, type Segment } from "@/components/charts";
 import { AmountInput, RiskMeter, Skel, useNow } from "@/components/ui";
-import { FlowBurst } from "@/components/flow-burst";
 import { FaucetButton } from "@/components/app/faucet";
 import { useWalletModal } from "@/components/wallet";
 import { useMezoFlow, usePlan, usePresets, type StrategyView } from "@/hooks/useMezoFlow";
-import { useTx, type TxStep } from "@/hooks/useTx";
+import { permitStep, useTx, type TxStep } from "@/hooks/useTx";
 import { ADDR, allocatorAbi, erc20Abi, KIND, RISK_LABEL } from "@/lib/contracts";
 import { aprToApy, fmtAmount, fmtDate, fmtPct, parseAmount, toNum } from "@/lib/format";
 import { SERIES, seriesForVault } from "@/lib/viz";
@@ -40,7 +39,6 @@ export default function AllocatePage() {
     return { kind: "preset", id: Number.isInteger(id) && id >= 0 && id < 16 ? id : 1 };
   });
   const [custom, setCustom] = useState<Record<string, number>>({});
-  const [burst, setBurst] = useState(0);
 
   // Until the user moves a slider, the custom split starts from a sensible default.
   const defaults = useMemo(() => {
@@ -110,32 +108,30 @@ export default function AllocatePage() {
 
   async function allocate() {
     if (!ok || !amount || !address) return;
-    const steps: TxStep[] = [];
-    if ((account?.allocatorAllowance ?? 0n) < allocated) {
-      steps.push({
-        title: `Approving ${fmtAmount(allocated)} MUSD`,
-        done: `Approved ${fmtAmount(allocated)} MUSD for the allocator`,
-        request: { address: ADDR.musd, abi: erc20Abi, functionName: "approve", args: [ADDR.allocator, allocated] },
-      });
-    }
-    steps.push({
-      title: `Allocating ${fmtAmount(allocated)} MUSD`,
-      done: `Allocated ${fmtAmount(allocated)} MUSD across ${rows.filter((r) => r.part > 0n).length} strategies`,
-      request:
-        choice.kind === "preset"
-          ? { address: ADDR.allocator, abi: allocatorAbi, functionName: "allocatePreset", args: [amount, BigInt(choice.id)] }
-          : {
-              address: ADDR.allocator,
-              abi: allocatorAbi,
-              functionName: "allocate",
-              args: [amount, split.vaults, split.weights],
-            },
-    });
-    const res = await run(steps);
-    if (res) {
-      setValue("");
-      setBurst((b) => b + 1);
-    }
+    const title = `Allocating ${fmtAmount(allocated)} MUSD`;
+    const done = `Allocated ${fmtAmount(allocated)} MUSD across ${rows.filter((r) => r.part > 0n).length} strategies`;
+    const plain =
+      choice.kind === "preset"
+        ? { address: ADDR.allocator, abi: allocatorAbi, functionName: "allocatePreset", args: [amount, BigInt(choice.id)] }
+        : { address: ADDR.allocator, abi: allocatorAbi, functionName: "allocate", args: [amount, split.vaults, split.weights] };
+    const step: TxStep =
+      (account?.allocatorAllowance ?? 0n) >= amount
+        ? { title, done, request: plain }
+        : permitStep({
+            title,
+            done,
+            token: ADDR.musd,
+            tokenLabel: `${fmtAmount(amount)} MUSD`,
+            spender: ADDR.allocator,
+            value: amount,
+            withPermit: (sig) =>
+              choice.kind === "preset"
+                ? { address: ADDR.allocator, abi: allocatorAbi, functionName: "allocatePresetWithPermit", args: [amount, BigInt(choice.id), sig] }
+                : { address: ADDR.allocator, abi: allocatorAbi, functionName: "allocateWithPermit", args: [amount, split.vaults, split.weights, sig] },
+            plain,
+          });
+    const res = await run([step]);
+    if (res) setValue("");
   }
 
   const planName =
@@ -160,13 +156,17 @@ export default function AllocatePage() {
             <div className="mt-4">
               <AmountInput value={value} onChange={setValue} max={isConnected ? wallet : undefined} invalid={!!err} disabled={!!busy} />
               {err && (
-                <p role="alert" className="mt-2 text-sm text-coral">
+                <p role="alert" className="mt-2 text-sm">
                   {err}
                 </p>
               )}
               {isConnected && wallet === 0n && (
                 <div className="mt-3 flex flex-wrap items-center gap-3 text-sm text-silt">
-                  Your wallet has no MUSD yet. <FaucetButton className="btn btn-ghost h-9 px-3 text-sm" />
+                  Your wallet has no MUSD yet.
+                  <Link href="/app/swap" className="btn btn-primary h-9 px-3 text-sm">
+                    Swap BTC for MUSD
+                  </Link>
+                  <FaucetButton className="btn btn-ghost h-9 px-3 text-sm" />
                 </div>
               )}
             </div>
@@ -278,12 +278,11 @@ export default function AllocatePage() {
 
         <aside className="xl:sticky xl:top-24">
           <section className="panel relative overflow-hidden p-6" aria-labelledby="review-title">
-            <FlowBurst trigger={burst} />
             <h2 id="review-title" className="text-lg font-semibold tracking-tight">
               Proposed allocation
             </h2>
             <p className="mt-1 text-sm text-silt">
-              {amount ? `For ${fmtAmount(amount)} MUSD.` : "Enter an amount to see the split."} Nothing moves until you approve.
+              {amount ? `For ${fmtAmount(amount)} MUSD.` : "Enter an amount to see the split."} Nothing moves until you sign.
             </p>
             <div className="mt-5">
               <StackBar segments={segments} format={(v) => `${fmtAmount(v)} MUSD`} />
@@ -335,8 +334,11 @@ export default function AllocatePage() {
             ) : (
               <button className="btn btn-primary btn-lg mt-5 w-full" disabled={!ok || !!busy} onClick={allocate}>
                 {busy ? <span className="spinner" /> : null}
-                {busy ?? ((account?.allocatorAllowance ?? 0n) < allocated ? "Approve and allocate" : "Allocate")}
+                {busy ?? "Allocate"}
               </button>
+            )}
+            {isConnected && (account?.allocatorAllowance ?? 0n) < (amount ?? 0n) && !busy && (
+              <p className="mt-2 text-center text-xs text-silt">One transaction. You sign a permit for this exact amount first; it costs no gas.</p>
             )}
             {planName && plan && (
               <p className="mt-4 text-sm text-silt">
@@ -381,33 +383,41 @@ function Reallocate({
 
   async function go() {
     if (!address || from.length === 0) return;
-    const steps: TxStep[] = [];
-    for (const s of from) {
-      if (s.shareAllowanceToAllocator < s.user.shares) {
-        steps.push({
-          title: `Approving ${s.meta.name} shares`,
-          done: `Approved ${s.meta.name} shares for the allocator`,
-          request: { address: s.meta.vault, abi: erc20Abi, functionName: "approve", args: [ADDR.allocator, s.user.shares] },
-        });
-      }
-    }
-    steps.push({
-      title: `Moving ${fmtAmount(total)} MUSD to the new split`,
-      done: `Moved ${fmtAmount(total)} MUSD to the new split`,
-      request: {
-        address: ADDR.allocator,
-        abi: allocatorAbi,
-        functionName: "reallocate",
-        args: [
-          from.map((s) => s.meta.vault),
-          from.map((s) => s.user.shares),
-          split.vaults,
-          split.weights,
-          choice.kind === "preset" ? choice.id : CUSTOM,
-        ],
-      },
-    });
-    const res = await run(steps);
+    const vaults = from.map((s) => s.meta.vault);
+    const shares = from.map((s) => s.user.shares);
+    const presetId = choice.kind === "preset" ? choice.id : CUSTOM;
+    const title = `Moving ${fmtAmount(total)} MUSD to the new split`;
+    const done = `Moved ${fmtAmount(total)} MUSD to the new split`;
+    const plain = {
+      address: ADDR.allocator,
+      abi: allocatorAbi,
+      functionName: "reallocate",
+      args: [vaults, shares, split.vaults, split.weights, presetId],
+    };
+    const needs = from.filter((s) => s.shareAllowanceToAllocator < s.user.shares);
+    const step: TxStep = needs.length
+      ? {
+          title,
+          done,
+          // One signature per position, then a single transaction.
+          permits: from.map((s) => ({ token: s.meta.vault, spender: ADDR.allocator, value: s.user.shares, label: `your ${s.meta.name} shares` })),
+          withPermits: (sigs) => ({
+            address: ADDR.allocator,
+            abi: allocatorAbi,
+            functionName: "reallocateWithPermit",
+            args: [vaults, shares, sigs, split.vaults, split.weights, presetId],
+          }),
+          fallback: [
+            ...needs.map((s) => ({
+              title: `Approving ${s.meta.name} shares`,
+              done: `Approved ${s.meta.name} shares for the allocator`,
+              request: { address: s.meta.vault, abi: erc20Abi, functionName: "approve", args: [ADDR.allocator, s.user.shares] },
+            })),
+            { title, done, request: plain },
+          ],
+        }
+      : { title, done, request: plain };
+    const res = await run([step]);
     if (res) setPicked({});
   }
 

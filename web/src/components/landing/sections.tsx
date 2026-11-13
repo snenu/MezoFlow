@@ -93,8 +93,8 @@ const STEPS = [
   },
   {
     title: "Get some MUSD",
-    body: "Claim 25 test MUSD from the built-in faucet, or borrow it against BTC on Mezo.",
-    cost: "1 transaction",
+    body: "Swap testnet BTC from the Mezo faucet for MUSD through Mezo Pools, or claim a little from the MezoFlow faucet.",
+    cost: "1 transaction, or none if you swap and deposit together",
   },
   {
     title: "Choose where it goes",
@@ -104,7 +104,7 @@ const STEPS = [
   {
     title: "Deposit and receive shares",
     body: "Vault shares are ERC-4626 tokens in your wallet. They grow in value as the strategy earns.",
-    cost: "2 transactions: approve, then deposit",
+    cost: "1 transaction: you sign a permit, then deposit",
   },
   {
     title: "Track it, then withdraw",
@@ -185,13 +185,15 @@ const CONTRACT_ROWS: [string, string, string][] = [
   ["Term Savings vault", ADDR.term, "7-day lock, higher rate, early-exit penalty to reserve"],
   ["Stability Pool vault", ADDR.sp, "Routes MUSD into Mezo's Stability Pool, shares BTC gains"],
   ["Auto Allocator", ADDR.allocator, "Splits one deposit across vaults in a single transaction"],
+  ["Mezo Pools zap", ADDR.zap, "Swaps BTC or MEZO to MUSD and deposits it, in one transaction"],
   ["Strategy registry", ADDR.registry, "Strategy catalogue and protocol announcements"],
   ["Activity ledger", ADDR.ledger, "Every user action, on-chain"],
   ["Fee manager", ADDR.fees, "Disclosed fee schedule and treasury"],
   ["Alert center", ADDR.alerts, "Your notification preferences"],
-  ["Test MUSD faucet", ADDR.faucet, "25 MUSD per address per day"],
+  ["Test MUSD faucet", ADDR.faucet, "A little MUSD per address per day"],
   ["MUSD token (Mezo)", MEZO.MUSD, "Mezo's Bitcoin-backed stablecoin"],
   ["Stability Pool (Mezo)", MEZO.StabilityPool, "Official MUSD Stability Pool"],
+  ["Pools router (Mezo)", MEZO.PoolsRouter, "Mezo Pools swap router"],
 ];
 
 export function ContractsSection() {
