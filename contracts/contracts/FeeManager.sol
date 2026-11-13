@@ -13,13 +13,24 @@ interface IReserveFundable {
 /// @notice Holds the disclosed fee schedule for every MezoFlow vault and acts as the
 /// protocol treasury. Collected fees can be recycled into vault reward reserves, which
 /// is what funds the reserve-backed savings rates (fee-backed yield).
+///
+/// Fee increases on a vault that already has depositors only take effect after
+/// FEE_INCREASE_DELAY, so holders always have time to leave at the old fee (audit F-06).
+/// Decreases apply immediately.
 contract FeeManager is Ownable {
     using SafeERC20 for IERC20;
 
     uint16 public constant MAX_WITHDRAWAL_FEE_BPS = 200; // hard cap: 2%
+    uint64 public constant FEE_INCREASE_DELAY = 2 days;
+
+    struct FeeSchedule {
+        uint16 current;
+        uint16 pending;
+        uint64 effectiveAt; // 0 = nothing scheduled
+    }
 
     IERC20 public immutable musd;
-    mapping(address => uint16) public withdrawalFeeBps;
+    mapping(address => FeeSchedule) public feeSchedule;
     mapping(address => bool) public isVault;
     mapping(address => uint256) public feesByVault;
     uint256 public totalFeesCollected;
@@ -27,6 +38,7 @@ contract FeeManager is Ownable {
 
     event VaultSet(address indexed vault, bool allowed);
     event WithdrawalFeeSet(address indexed vault, uint16 oldBps, uint16 newBps);
+    event WithdrawalFeeScheduled(address indexed vault, uint16 currentBps, uint16 newBps, uint64 effectiveAt);
     event FeeReceived(address indexed vault, uint256 amount);
     event Recycled(address indexed vault, uint256 amount);
     event Withdrawn(address indexed to, uint256 amount);
@@ -43,10 +55,26 @@ contract FeeManager is Ownable {
         emit VaultSet(vault, allowed);
     }
 
+    /// @notice Fee in force right now for exits from `vault`.
+    function withdrawalFeeBps(address vault) public view returns (uint16) {
+        FeeSchedule memory f = feeSchedule[vault];
+        if (f.effectiveAt != 0 && block.timestamp >= f.effectiveAt) return f.pending;
+        return f.current;
+    }
+
+    /// @notice Set a vault's exit fee. Lowering it, or setting it before anyone has
+    /// deposited, is immediate; raising it on a live vault is scheduled.
     function setWithdrawalFee(address vault, uint16 bps) external onlyOwner {
         if (bps > MAX_WITHDRAWAL_FEE_BPS) revert FeeTooHigh();
-        emit WithdrawalFeeSet(vault, withdrawalFeeBps[vault], bps);
-        withdrawalFeeBps[vault] = bps;
+        uint16 current = withdrawalFeeBps(vault);
+        if (bps <= current || IERC20(vault).totalSupply() == 0) {
+            feeSchedule[vault] = FeeSchedule(bps, 0, 0);
+            emit WithdrawalFeeSet(vault, current, bps);
+        } else {
+            uint64 at = uint64(block.timestamp) + FEE_INCREASE_DELAY;
+            feeSchedule[vault] = FeeSchedule(current, bps, at);
+            emit WithdrawalFeeScheduled(vault, current, bps, at);
+        }
     }
 
     /// @notice Called by a vault right after it transferred `amount` MUSD of fees here.
