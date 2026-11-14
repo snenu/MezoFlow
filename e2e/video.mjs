@@ -223,7 +223,11 @@ const scenes = [
       await u.pause(1200);
       await u.type(u.page.getByPlaceholder("Ask about strategies, risks or your portfolio"), "Can I withdraw from the Stability Pool right now?");
       await u.page.keyboard.press("Enter");
-      await u.pause(6000);
+      // Let the whole answer land on screen before moving on.
+      await u.page.getByRole("button", { name: "Stop" }).waitFor({ state: "detached", timeout: 45_000 }).catch(() => {});
+      await u.pause(800);
+      await u.hover(u.page.getByRole("link", { name: "Stability Pool" }).last());
+      await u.pause(3500);
     },
   },
   {
