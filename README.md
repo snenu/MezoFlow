@@ -5,7 +5,6 @@
 Everything runs on Mezo Testnet. The app reads every number from deployed contracts. There is no backend database.
 
 - **Live app:** https://mezoflow.vercel.app
-- **Demo video (4 min, narrated, real testnet transactions):** [docs/demo/mezoflow-demo.mp4](https://github.com/snenu/MezoFlow/blob/main/docs/demo/mezoflow-demo.mp4)
 - **Contracts:** 11, all verified on the [Mezo explorer](https://explorer.test.mezo.org/address/0x548D3c642e39593c7D31F3C678878a3dB859F5dd?tab=contract)
 - **Health check:** https://mezoflow.vercel.app/api/health
 
