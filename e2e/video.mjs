@@ -41,13 +41,16 @@ const scenes = [
       await u.go("/");
       await u.pause(1200);
       await u.hover(u.page.locator("#hero-title"));
+      await u.pause(900);
+      await u.hover(u.page.getByText("Deposited in MezoFlow").first());
     },
   },
   {
     id: "simulator",
-    say: "Pick an amount and a plan, and the blue rate board shows exactly where your MUSD would go, at today's on-chain rates.",
+    say: "Type an amount and pick a plan, and the blue board shows exactly where your MUSD would go, at today's on-chain rates.",
     run: async (u) => {
       await u.type(u.page.locator("#sim-amount"), "2500", true);
+      await u.pause(500);
       await u.click(u.page.getByRole("radio", { name: "Growth" }));
       await u.pause(1400);
       await u.click(u.page.getByRole("radio", { name: "Conservative" }));
@@ -57,25 +60,38 @@ const scenes = [
   },
   {
     id: "landing",
-    say: "Below that are the three strategies: flexible savings, a seven-day term vault, and Mezo's own Stability Pool. Each one shows its rate, how withdrawals work, and its risks in plain English.",
+    say: "There are three strategies: flexible savings, a seven-day term vault with a higher rate, and Mezo's own Stability Pool, which earns BTC from liquidations. Each one shows its rate, how withdrawals work, and its risk.",
     run: async (u) => {
       await u.scrollTo("#strategies", 2600);
-      await u.pause(900);
-      await u.scroll(900, 2600);
+      await u.pause(700);
+      await u.hover(u.page.locator("#strategies tbody tr").nth(0));
+      await u.pause(600);
+      await u.hover(u.page.locator("#strategies tbody tr").nth(2));
+      await u.pause(600);
+    },
+  },
+  {
+    id: "features",
+    say: "One deposit can be split across all of them at once. Risk is shown right next to the return, and alerts and answers come straight from the contracts.",
+    run: async (u) => {
+      await u.scrollTo("#features", 2400);
+      await u.pause(600);
+      await u.scroll(1400, 5200);
     },
   },
   {
     id: "landing-2",
-    say: "MezoFlow explains what can go wrong before you deposit, and every contract is public on the Mezo explorer.",
+    say: "It's honest about what can go wrong, and every contract is public and verified on the Mezo explorer.",
     run: async (u) => {
-      await u.scroll(1500, 3000);
+      await u.scrollTo("#risks", 2600);
+      await u.pause(900);
       await u.scrollTo("#contracts", 2600);
-      await u.pause(800);
+      await u.pause(600);
     },
   },
   {
     id: "connect",
-    say: "Let's use it. I'll open the app and connect a wallet that holds a little testnet BTC from the Mezo faucet.",
+    say: "Let's use it. I'll open the app and connect a wallet holding a little testnet BTC from the Mezo faucet.",
     run: async (u) => {
       await u.go("/app/swap");
       await u.pause(800);
@@ -87,24 +103,49 @@ const scenes = [
   },
   {
     id: "swap",
-    say: "On Get MUSD, I swap BTC for MUSD through Mezo Pools. I sign a BTC permit instead of a separate approval, so it's a single transaction.",
+    say: "On Get MUSD, I swap BTC for MUSD through Mezo Pools. The app shows the pool price next to Mezo's oracle. I sign a BTC permit instead of a separate approval, so it's a single transaction.",
     run: async (u) => {
       await u.type(u.page.locator("#swap-amount"), "0.0004");
-      await u.pause(1800);
+      await u.pause(1200);
+      await u.hover(u.page.getByText("Mezo Pools price").first());
+      await u.pause(1200);
       await u.tx(() => u.click(u.page.getByRole("button", { name: "Swap BTC for MUSD" })), /Swapped/);
     },
   },
   {
     id: "swap-done",
-    say: "Confirmed in a few seconds. Every confirmation links to the transaction on the Mezo explorer.",
+    say: "Confirmed in seconds. Every confirmation links to the transaction on the Mezo explorer.",
     run: async (u) => {
       await u.hover(u.page.locator(".toast-success").first());
       await u.pause(1000);
     },
   },
   {
+    id: "swap-deposit",
+    say: "I can also send the MUSD straight into a strategy. Here, BTC goes into the Stability Pool: swap and deposit, in one transaction.",
+    run: async (u) => {
+      await u.click(u.page.getByRole("radio", { name: /^Stability Pool/ }));
+      await u.type(u.page.locator("#swap-amount"), "0.0003");
+      await u.pause(1500);
+      await u.tx(() => u.click(u.page.getByRole("button", { name: "Swap and deposit" })), /Deposited about/);
+    },
+  },
+  {
+    id: "stability",
+    say: "The strategies page lists every vault from the on-chain registry. In the Stability Pool, my MUSD helps repay liquidated debt, and I earn the BTC collateral. The page shows whether withdrawals are open right now.",
+    run: async (u) => {
+      await u.go("/app/strategies");
+      await u.pause(1400);
+      await u.scroll(500, 2000);
+      await u.click(u.page.getByRole("link", { name: "Stability Pool", exact: true }).first());
+      await u.page.waitForLoadState("networkidle").catch(() => {});
+      await u.pause(1800);
+      await u.scroll(600, 2600);
+    },
+  },
+  {
     id: "term",
-    say: "Now I'll put five MUSD into Term Savings. It pays a higher rate for a seven-day lock. Again, one signature and one transaction.",
+    say: "Now five MUSD into Term Savings, which pays more for a seven-day lock. The MUSD permit makes it one signature and one transaction.",
     run: async (u) => {
       await u.go("/app/strategies/term-savings");
       await u.pause(1500);
@@ -115,7 +156,7 @@ const scenes = [
   },
   {
     id: "allocate",
-    say: "The auto allocator splits one deposit across strategies. I'll put twelve MUSD into the Balanced plan, review the split, and sign.",
+    say: "The auto allocator splits one deposit across strategies. I'll put twelve MUSD into the Balanced plan, check the split, and sign once.",
     run: async (u) => {
       await u.go("/app/allocate");
       await u.pause(1200);
@@ -176,7 +217,7 @@ const scenes = [
   },
   {
     id: "assistant",
-    say: "And Ask Flow answers questions from the same contracts. It can explain things, but it can never move your funds.",
+    say: "Ask Flow answers questions from the same contracts. It can explain anything, but it can never move your funds.",
     run: async (u) => {
       await u.go("/app/assistant");
       await u.pause(1200);
@@ -186,14 +227,33 @@ const scenes = [
     },
   },
   {
+    id: "devices",
+    say: "And it works the same on a phone or a tablet, with nothing cut off.",
+    run: async (u) => {
+      await u.devices(["/", "/app/risk"]);
+      await u.pause(1800);
+      const [phone, tablet] = u.frames;
+      await u.moveTo(phone.x, phone.y);
+      await u.scroll(1800, 4200);
+      await u.moveTo(tablet.x, tablet.y);
+      await u.scroll(900, 2400);
+    },
+  },
+  {
     id: "outro",
-    say: "That's MezoFlow. One-transaction deposits with MUSD permits, BTC to MUSD through Mezo Pools, and every number read straight from the chain.",
+    say: "That's MezoFlow: one-transaction deposits with MUSD permits, BTC to MUSD through Mezo Pools, and every number read straight from the chain. Try it at mezoflow dot vercel dot app.",
     run: async (u) => {
       await u.go("/");
       await u.pause(2500);
     },
   },
 ];
+
+// ONLY=intro,devices rehearses a few scenes (no wallet funds needed for most).
+if (process.env.ONLY) {
+  const keep = process.env.ONLY.split(",");
+  scenes.splice(0, scenes.length, ...scenes.filter((s) => keep.includes(s.id)));
+}
 
 // ---------------------------------------------------------------------------
 // Narration
@@ -204,16 +264,18 @@ function duration(file) {
 for (const s of scenes) {
   s.audio = path.join(WORK, `${s.id}.mp3`);
   if (!fs.existsSync(s.audio) || fs.statSync(s.audio).size === 0 || process.env.REVOICE) {
-    // The neural voice service is occasionally flaky; retry, then fall back to Windows' voice.
+    // The neural voice service is occasionally flaky. Retry rather than mix in a second
+    // voice; the Windows voice is used only when ALLOW_SAPI=1.
     let ok = false;
-    for (let i = 0; i < 4 && !ok; i++) {
+    for (let i = 0; i < 10 && !ok; i++) {
       try {
         execFileSync("python", ["-m", "edge_tts", "--voice", VOICE, "--text", s.say, "--write-media", s.audio], { stdio: "pipe" });
         ok = fs.statSync(s.audio).size > 0;
       } catch {
-        await new Promise((r) => setTimeout(r, 1500));
+        await new Promise((r) => setTimeout(r, 1500 * (i + 1)));
       }
     }
+    if (!ok && !process.env.ALLOW_SAPI) throw new Error(`neural voice failed for scene ${s.id}; rerun, or set ALLOW_SAPI=1`);
     if (!ok) {
       const wav = s.audio.replace(/\.mp3$/, ".wav");
       const ps = `Add-Type -AssemblyName System.Speech; $s=New-Object System.Speech.Synthesis.SpeechSynthesizer; $s.SelectVoice('Microsoft Zira Desktop'); $s.SetOutputToWaveFile('${wav}'); $s.Speak(@'
@@ -238,6 +300,16 @@ const w = await attachWallet(page, { key: walletKey(), rpc: RPC });
 
 // A visible cursor, since headless recordings don't draw one.
 await page.addInitScript(() => {
+  if (window.top !== window) return; // one cursor, drawn by the top page only
+  window.__demoCursor = (x, y) => {
+    window.__demoX = x;
+    window.__demoY = y;
+    const c = document.getElementById("demo-cursor");
+    if (c) {
+      c.style.left = x + "px";
+      c.style.top = y + "px";
+    }
+  };
   const draw = () => {
     if (document.getElementById("demo-cursor")) return;
     const c = document.createElement("div");
@@ -279,6 +351,7 @@ const u = {
   page,
   pause: (ms) => page.waitForTimeout(ms),
   async go(route) {
+    u.framed = false;
     await page.goto(BASE + route, { waitUntil: "domcontentloaded" });
     await page.waitForLoadState("networkidle").catch(() => {});
     await page.mouse.move(mx, my);
@@ -288,11 +361,55 @@ const u = {
     for (let i = 1; i <= steps; i++) {
       const t = i / steps;
       const e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; // ease in-out
-      await page.mouse.move(mx + (x - mx) * e, my + (y - my) * e);
+      const px = mx + (x - mx) * e;
+      const py = my + (y - my) * e;
+      await page.mouse.move(px, py);
+      // Over an iframe the top page gets no mousemove events, so place the cursor directly.
+      if (u.framed) await page.evaluate(([a, b]) => window.__demoCursor?.(a, b), [px, py]);
       await page.waitForTimeout(12);
     }
     mx = x;
     my = y;
+  },
+  /** Shows the live site in a phone frame and a tablet frame, side by side. */
+  async devices([phoneRoute, tabletRoute]) {
+    const frame = (route, w, h, scale, label) => `
+      <figure style="margin:0;display:flex;flex-direction:column;align-items:center;gap:14px">
+        <div style="width:${Math.round(w * scale)}px;height:${Math.round(h * scale)}px;border:3px solid #000;border-radius:26px;overflow:hidden;background:#fff">
+          <iframe src="${BASE}${route}" style="width:${w}px;height:${h}px;border:0;transform:scale(${scale});transform-origin:0 0"></iframe>
+        </div>
+        <figcaption style="font:600 15px system-ui,sans-serif;color:#000">${label}</figcaption>
+      </figure>`;
+    await page.setContent(
+      `<!doctype html><html><body style="margin:0;height:100vh;display:flex;align-items:center;justify-content:center;gap:110px;background:#fff">
+        ${frame(phoneRoute, 390, 844, 0.86, "Phone, 390 px wide")}
+        ${frame(tabletRoute, 820, 1180, 0.6, "Tablet, 820 px wide")}
+      </body></html>`,
+      { waitUntil: "load", timeout: 60_000 },
+    );
+    u.framed = true;
+    u.frames = [];
+    for (const el of await page.locator("figure > div").all()) {
+      const b = await el.boundingBox();
+      u.frames.push({ x: b.x + b.width / 2, y: b.y + b.height / 2 });
+    }
+    // setContent rewrites the document, so draw the cursor again by hand.
+    await page.evaluate(([a, b]) => {
+      let c = document.getElementById("demo-cursor");
+      if (!c) {
+        c = document.createElement("div");
+        c.id = "demo-cursor";
+        c.innerHTML =
+          '<svg width="22" height="22" viewBox="0 0 24 24"><path d="M4 2l15 9-7 1.6L8.6 20z" fill="#000" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>';
+        Object.assign(c.style, { position: "fixed", zIndex: "2147483647", pointerEvents: "none", transform: "translate(-3px,-2px)" });
+        document.body.appendChild(c);
+      }
+      window.__demoCursor = (x, y) => {
+        c.style.left = x + "px";
+        c.style.top = y + "px";
+      };
+      window.__demoCursor(a, b);
+    }, [mx, my]);
   },
   async hover(loc) {
     await loc.scrollIntoViewIfNeeded().catch(() => {});
