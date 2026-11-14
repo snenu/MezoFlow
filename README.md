@@ -71,49 +71,43 @@ More screenshots are in [docs/screenshots](docs/screenshots).
 ## Architecture
 
 ```mermaid
-flowchart LR
-  subgraph Browser
-    UI["Next.js app on Vercel<br/>wagmi + viem"]
-    W["Your wallet<br/>signs permits and transactions"]
+flowchart TB
+  W["Your wallet<br/>one permit signature, one transaction"]
+  UI["Web app on Vercel<br/>Next.js, wagmi, viem"]
+
+  subgraph MF["MezoFlow contracts on Mezo Testnet"]
+    ZAP["MezoFlowZap<br/>BTC or MEZO to MUSD"]
+    AA["AutoAllocator<br/>plans and reallocation"]
+    subgraph V["ERC-4626 MUSD vaults"]
+      FLEX["Flexible Savings"]
+      TERM["Term Savings"]
+      SPV["Stability Pool vault"]
+    end
+    LEDGER["ActivityLedger<br/>every action, on-chain"]
+    LENS["MezoFlowLens<br/>one read call per screen"]
   end
 
-  subgraph MezoFlow["MezoFlow contracts (Mezo Testnet)"]
-    ZAP["MezoFlowZap<br/>BTC/MEZO to MUSD"]
-    AA["AutoAllocator<br/>presets, reallocation"]
-    FLEX["FlexibleSavingsVault"]
-    TERM["TermVault"]
-    SPV["StabilityPoolVault"]
-    LEDGER["ActivityLedger"]
-    REG["StrategyRegistry"]
-    FEES["FeeManager"]
-    ALERTS["AlertCenter"]
-    FAUCET["MUSDFaucet"]
-    LENS["MezoFlowLens<br/>batched reads"]
-  end
-
-  subgraph Mezo["Mezo protocol"]
-    MUSD["MUSD"]
-    BTC["BTC / MEZO tokens"]
+  subgraph MZ["Mezo"]
     POOLS["Mezo Pools router"]
-    SP["Stability Pool"]
+    SP["MUSD Stability Pool"]
     ORACLE["PriceFeed, TroveManager,<br/>SortedTroves"]
   end
 
-  W -->|"1 signature + 1 transaction"| ZAP & AA & FLEX & TERM & SPV
-  UI -->|"reads"| LENS
-  UI -->|"history"| LEDGER
-  ZAP -->|"swap"| POOLS
+  W --> ZAP
+  W --> AA
+  W --> V
+  ZAP -->|swap| POOLS
   ZAP --> AA
-  ZAP --> FLEX & TERM & SPV
-  AA --> FLEX & TERM & SPV
-  SPV -->|"provideToSP / withdrawFromSP"| SP
-  FLEX & TERM & SPV & AA & ZAP & FAUCET -->|"record"| LEDGER
-  FLEX & TERM & SPV --> FEES
-  LENS --> REG & ORACLE & SP
-  BTC -.->|"permit"| ZAP
-  MUSD -.->|"permit"| FLEX & TERM & SPV & AA
+  ZAP --> V
+  AA --> V
+  SPV -->|"provideToSP, withdrawFromSP"| SP
+  V -->|record| LEDGER
+  UI -->|read| LENS
+  UI -->|history| LEDGER
+  LENS --> ORACLE
 ```
 
+- **Supporting contracts.** `StrategyRegistry` lists the strategies and announcements, `FeeManager` holds the exit-fee schedule, `AlertCenter` stores alert preferences, and `MUSDFaucet` hands out test MUSD. MUSD, BTC and MEZO are pulled with EIP-2612 permits.
 - **No backend state.** The two serverless routes are `/api/health`, which reads the RPC and the Lens contract, and `/api/assistant`, which answers questions using read-only chain tools. Neither stores anything.
 - **One read call per screen.** `MezoFlowLens` returns protocol, strategy and account data, plus permit nonces, in a single call, batched through Multicall3.
 - **History from the chain.** The activity page, CSV export, portfolio chart and alerts are all rebuilt from `ActivityLedger` entries and events.
