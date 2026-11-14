@@ -1,0 +1,147 @@
+{
+  "base": "https://mezoflow.vercel.app",
+  "wallet": "0x6B2CEDDA1772523648F43ffa247B3b1Ce502172e",
+  "ranAt": "2026-11-14T04:01:20.030Z",
+  "passed": 20,
+  "failed": 0,
+  "transactions": 11,
+  "btcSpent": "0.000500000919860298",
+  "pageErrors": [],
+  "results": [
+    {
+      "step": "connect wallet (EIP-6963 picker)",
+      "ok": true
+    },
+    {
+      "step": "swap 0.0003 BTC -> MUSD to wallet (BTC permit, Mezo Pools)",
+      "ok": true,
+      "hash": "0xfe2a5a9e045f8271d3a436e03a40e585d1a2cd0ad13ede86be1b9944c49d688a",
+      "block": 16767939,
+      "gasUsed": "475000",
+      "seconds": 9,
+      "explorer": "ok"
+    },
+    {
+      "step": "swap 0.0002 BTC and deposit into Flexible Savings (one tx)",
+      "ok": true,
+      "hash": "0x00c8bb34792b3ad841a49ab6a8e4b72e79c8adf351f006fdaada54e7556a84e5",
+      "block": 16767941,
+      "gasUsed": "850000",
+      "seconds": 5,
+      "explorer": "ok"
+    },
+    {
+      "step": "claim test MUSD from the MezoFlow faucet",
+      "ok": true,
+      "hash": "0xd51a1b395d794087895d6b11219d58f0def6602afa48c8e5f572dab0ad265c0b",
+      "block": 16767942,
+      "gasUsed": "213132",
+      "seconds": 3,
+      "explorer": "ok"
+    },
+    {
+      "step": "deposit 3 MUSD into Term Savings (MUSD permit, one tx)",
+      "ok": true,
+      "hash": "0xd8ccc21caebde1f7e20c338157f97d91cab56b269475de2c45552732f2136b11",
+      "block": 16767944,
+      "gasUsed": "475000",
+      "seconds": 3,
+      "explorer": "ok"
+    },
+    {
+      "step": "deposit 3 MUSD into the Stability Pool vault (permit)",
+      "ok": true,
+      "hash": "0x02201b1a5754d36d9108dc8073688c6b25a86a7916e1d51b44137bcd6d255ded",
+      "block": 16767946,
+      "gasUsed": "475000",
+      "seconds": 12,
+      "explorer": "ok"
+    },
+    {
+      "step": "withdraw 1 MUSD from the Stability Pool vault",
+      "ok": true,
+      "hash": "0x0d08e4f3ca90590d100661a0d3120c891784c249909b59dad7b8dada2e0956d1",
+      "block": 16767949,
+      "gasUsed": "500000",
+      "seconds": 8,
+      "explorer": "ok"
+    },
+    {
+      "step": "Claim BTC tab shows pending liquidation gains",
+      "ok": true
+    },
+    {
+      "step": "withdraw 1 MUSD from Flexible Savings",
+      "ok": true,
+      "hash": "0x7d86527ac4c62a721362567294aabf0983ac45b14e0d07fa5ad2727ec9badc26",
+      "block": 16767952,
+      "gasUsed": "500000",
+      "seconds": 8,
+      "explorer": "ok"
+    },
+    {
+      "step": "allocate 12 MUSD with the Growth preset (permit, one tx)",
+      "ok": true,
+      "hash": "0x1081402263295bb15ae7cffa3783c4499a686c34480a53e3d12c5bc732514543",
+      "block": 16767954,
+      "gasUsed": "982281",
+      "seconds": 5,
+      "explorer": "ok"
+    },
+    {
+      "step": "move the Flexible Savings position to the Balanced plan (share permit)",
+      "ok": true,
+      "hash": "0xaec667f1da6913372df117e97c70846a67ae852f0e71f62c2d8677b4bf5ab5a3",
+      "block": 16767956,
+      "gasUsed": "1250000",
+      "seconds": 8,
+      "explorer": "ok"
+    },
+    {
+      "step": "leave Term Savings early (1.5% penalty to the reserve)",
+      "ok": true,
+      "hash": "0xc1314a32b348da49dcaf81d3804230c0a689905e0b6b4affedef1e2d135b4745",
+      "block": 16767959,
+      "gasUsed": "500000",
+      "seconds": 10,
+      "explorer": "ok"
+    },
+    {
+      "step": "save alert preferences on-chain",
+      "ok": true,
+      "hash": "0x43e746f4ab2e2f919552fc3945052cbbc8c0f640ba64b54884344fd2723245c1",
+      "block": 16767961,
+      "gasUsed": "80000",
+      "seconds": 8,
+      "explorer": "ok"
+    },
+    {
+      "step": "activity shows swaps, deposits and withdrawals from the ledger",
+      "ok": true
+    },
+    {
+      "step": "activity CSV export downloads",
+      "ok": true
+    },
+    {
+      "step": "risk dashboard shows live Mezo telemetry",
+      "ok": true
+    },
+    {
+      "step": "Ask Flow answers from chain data",
+      "ok": true
+    },
+    {
+      "step": "overview shows positions after the run",
+      "ok": true
+    },
+    {
+      "step": "phone width (375px): no horizontal scroll on 10 routes",
+      "ok": true
+    },
+    {
+      "step": "tablet width (820px): no horizontal scroll on 10 routes",
+      "ok": true
+    }
+  ]
+}

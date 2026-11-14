@@ -41,7 +41,7 @@ export async function GET() {
       status: ok ? "ok" : "degraded",
       service: "mezoflow-web",
       network: "Mezo Testnet (31611)",
-      commit: (process.env.VERCEL_GIT_COMMIT_SHA ?? process.env.MEZOFLOW_COMMIT)?.slice(0, 7) ?? null,
+      commit: (process.env.VERCEL_GIT_COMMIT_SHA || process.env.MEZOFLOW_COMMIT)?.slice(0, 7) ?? null,
       lens: ADDR.lens,
       checks,
       latencyMs: Date.now() - started,
