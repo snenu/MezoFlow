@@ -15,6 +15,7 @@ const RESERVE_EACH = E(process.env.RESERVE_EACH || 100); // MUSD per savings vau
 const FAUCET_FUND = E(process.env.FAUCET_FUND || 150);
 const FAUCET_AMOUNT = E(process.env.FAUCET_AMOUNT || 10);
 const BTC_KEEP = E(process.env.BTC_KEEP || 0.004); // kept for gas + funding demo wallets
+const SEED_MUSD = E(process.env.SEED_MUSD || 120); // MUSD kept for seeding the three demo wallets
 
 async function main() {
   if (network.name !== "mezotestnet") throw new Error("run with --network mezotestnet");
@@ -107,7 +108,7 @@ async function main() {
   ]);
 
   console.log("\nMUSD via Mezo Pools (zap, BTC permit)");
-  const need = RESERVE_EACH * 2n + FAUCET_FUND + E(20);
+  const need = RESERVE_EACH * 2n + FAUCET_FUND + SEED_MUSD;
   const have = await musd.balanceOf(D);
   if (have < need) {
     const btcBal2 = await ethers.provider.getBalance(D);

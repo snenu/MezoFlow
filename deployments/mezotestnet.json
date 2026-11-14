@@ -1,0 +1,124 @@
+{
+  "network": "mezotestnet",
+  "chainId": 31611,
+  "deployer": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+  "startBlock": 16767742,
+  "mezo": {
+    "MUSD": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+    "BTC": "0x7b7C000000000000000000000000000000000000",
+    "MEZO": "0x7B7c000000000000000000000000000000000001",
+    "StabilityPool": "0x1CCA7E410eE41739792eA0A24e00349Dd247680e",
+    "PriceFeed": "0x86bCF0841622a5dAC14A313a15f96A95421b9366",
+    "SortedTroves": "0x722E4D24FD6Ff8b0AC679450F3D91294607268fA",
+    "TroveManager": "0xE47c80e8c23f6B4A1aE41c34837a0599D5D16bb0",
+    "BorrowerOperations": "0xCdF7028ceAB81fA0C6971208e83fa7872994beE5",
+    "PoolsRouter": "0x9a1ff7FE3a0F69959A3fBa1F1e5ee18e1A9CD7E9",
+    "PoolFactory": "0x4947243CC818b627A5D06d14C4eCe7398A23Ce1A",
+    "MusdBtcPool": "0xd16A5Df82120ED8D626a1a15232bFcE2366d6AA9"
+  },
+  "contracts": {
+    "ActivityLedger": "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+    "FeeManager": "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+    "StrategyRegistry": "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+    "FlexibleSavingsVault": "0x914bCE915DFaE6Bdd9d6773829E82909F36a2F84",
+    "TermVault": "0x2EeBD6785AB282A07b20A4b1DdF73B126662F844",
+    "StabilityPoolVault": "0xB57e3573E5eadF4468972B043C1E164d16aB2fA3",
+    "AutoAllocator": "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B",
+    "MUSDFaucet": "0x217522c6C7d434E96034484e5f38c71a0747Cb56",
+    "AlertCenter": "0xE25AC0100B76d154d44B1883CA15a2aAe90793cF",
+    "MezoFlowZap": "0xebB377E8519d5B5125C33E31231cEbC3BB73Bfc3",
+    "MezoFlowLens": "0x548D3c642e39593c7D31F3C678878a3dB859F5dd"
+  },
+  "constructorArgs": {
+    "ActivityLedger": [
+      "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3"
+    ],
+    "FeeManager": [
+      "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503"
+    ],
+    "StrategyRegistry": [
+      "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3"
+    ],
+    "FlexibleSavingsVault": [
+      "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+      450,
+      "1000000000000000000"
+    ],
+    "TermVault": [
+      "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+      800,
+      "1000000000000000000",
+      604800,
+      150
+    ],
+    "StabilityPoolVault": [
+      "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+      "1000000000000000000",
+      "0x1CCA7E410eE41739792eA0A24e00349Dd247680e",
+      "0x86bCF0841622a5dAC14A313a15f96A95421b9366",
+      "0x722E4D24FD6Ff8b0AC679450F3D91294607268fA",
+      "0xE47c80e8c23f6B4A1aE41c34837a0599D5D16bb0",
+      1000
+    ],
+    "AutoAllocator": [
+      "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D"
+    ],
+    "MUSDFaucet": [
+      "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "10000000000000000000",
+      86400
+    ],
+    "AlertCenter": [],
+    "MezoFlowZap": [
+      "0x9a1ff7FE3a0F69959A3fBa1F1e5ee18e1A9CD7E9",
+      "0x4947243CC818b627A5D06d14C4eCe7398A23Ce1A",
+      "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+      "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B"
+    ],
+    "MezoFlowLens": [
+      "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+      "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+      "0x217522c6C7d434E96034484e5f38c71a0747Cb56",
+      "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B",
+      "0xebB377E8519d5B5125C33E31231cEbC3BB73Bfc3",
+      "0x7b7C000000000000000000000000000000000000",
+      "0x7B7c000000000000000000000000000000000001"
+    ]
+  },
+  "endBlock": 16767794,
+  "verification": {
+    "checkedAt": "2026-11-14T03:51:39.378Z",
+    "results": {
+      "ActivityLedger": "verified",
+      "FeeManager": "verified",
+      "StrategyRegistry": "verified",
+      "FlexibleSavingsVault": "verified",
+      "TermVault": "verified",
+      "StabilityPoolVault": "verified",
+      "AutoAllocator": "verified",
+      "MUSDFaucet": "verified",
+      "AlertCenter": "verified",
+      "MezoFlowZap": "verified",
+      "MezoFlowLens": "verified"
+    }
+  }
+}

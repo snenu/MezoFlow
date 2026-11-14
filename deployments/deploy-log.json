@@ -1,0 +1,294 @@
+{
+  "network": "mezotestnet",
+  "chainId": 31611,
+  "txs": [
+    {
+      "label": "deploy ActivityLedger",
+      "hash": "0x48ad4c48a6597ed0e1a939050412b86ed726726499293d230bafbe9679924e9d",
+      "block": 16767743,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "gasUsed": "963945"
+    },
+    {
+      "label": "deploy FeeManager",
+      "hash": "0x5385a7610a20c9fd53215fdd6e5ac0d2142663a4bac5da4eaf82c2c4f9cbb632",
+      "block": 16767744,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+      "gasUsed": "770208"
+    },
+    {
+      "label": "deploy StrategyRegistry",
+      "hash": "0xdc49895e69ed354ade7c2fe62180064bccd7c5d2d05904c3ddc1c59a9c3adaff",
+      "block": 16767745,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+      "gasUsed": "1509094"
+    },
+    {
+      "label": "deploy FlexibleSavingsVault",
+      "hash": "0x0496cb9eac5b84cb77064123dd2e625b2d366f861317cb3e78337fb9b2612b6a",
+      "block": 16767746,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0x914bCE915DFaE6Bdd9d6773829E82909F36a2F84",
+      "gasUsed": "3779051"
+    },
+    {
+      "label": "deploy TermVault",
+      "hash": "0x57ddab5597752edc527eab748b18afcb9d6e619675da746e5fe18b10c902a41e",
+      "block": 16767747,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0x2EeBD6785AB282A07b20A4b1DdF73B126662F844",
+      "gasUsed": "3926726"
+    },
+    {
+      "label": "deploy StabilityPoolVault",
+      "hash": "0xe6075d04de61bdc7e55096889732fc693aa5e188046af2a312c0e69b8c244573",
+      "block": 16767748,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0xB57e3573E5eadF4468972B043C1E164d16aB2fA3",
+      "gasUsed": "5255282"
+    },
+    {
+      "label": "deploy AutoAllocator",
+      "hash": "0x7afe075400fa61b233198713d8530318a7f04a0e48600a05a9f6f4cde02a63b1",
+      "block": 16767750,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B",
+      "gasUsed": "2516359"
+    },
+    {
+      "label": "deploy MUSDFaucet",
+      "hash": "0xe3c7027e3ca06051bc3b5528e2c7669a3a05393ed3680c83e54fa5dfc2f56097",
+      "block": 16767752,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0x217522c6C7d434E96034484e5f38c71a0747Cb56",
+      "gasUsed": "604847"
+    },
+    {
+      "label": "deploy AlertCenter",
+      "hash": "0x4580a39ffd35f317d73e9495fa3b4039480072290929919551ef6f6e3755e8c4",
+      "block": 16767754,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0xE25AC0100B76d154d44B1883CA15a2aAe90793cF",
+      "gasUsed": "348787"
+    },
+    {
+      "label": "deploy MezoFlowZap",
+      "hash": "0x8ca5989036ee4389e513b8d4723601e5e58d834ffe6f4f2dbc67e389c35af942",
+      "block": 16767756,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0xebB377E8519d5B5125C33E31231cEbC3BB73Bfc3",
+      "gasUsed": "1252845"
+    },
+    {
+      "label": "deploy MezoFlowLens",
+      "hash": "0xa2e2ee78587acff693e80635f6babaddf2c3cca7d424bb9e26ad54ecaf14c65d",
+      "block": 16767757,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "contract": "0x548D3c642e39593c7D31F3C678878a3dB859F5dd",
+      "gasUsed": "1782380"
+    },
+    {
+      "label": "ledger writer: FlexibleSavingsVault",
+      "hash": "0x9de4b3c3d4538fed44215dfc48b4ddc56454fbdb71389cff27f2681161b67e35",
+      "block": 16767759,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "ledger writer: TermVault",
+      "hash": "0x098d49f3d318473771d0a713600376b9f6df379d4f0f7bc4da55a26df0af50c8",
+      "block": 16767760,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "ledger writer: StabilityPoolVault",
+      "hash": "0x40d841d5a5b54b30d8c98eb08dd6aaa4c398198a1a50b2a5ef11207b3a2cea4b",
+      "block": 16767762,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "ledger writer: AutoAllocator",
+      "hash": "0xece7cbd03f38d4296d712b0c14f1cf521eb7e494415da726da1262ede046299e",
+      "block": 16767764,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "ledger writer: MUSDFaucet",
+      "hash": "0xbc320369c93483484c089aa12d18d47efd6b0bf3b6c986058be18268b9a07ba4",
+      "block": 16767765,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "ledger writer: MezoFlowZap",
+      "hash": "0xc09a2d49a7ba4b78199b86e5949e12ef43d0d445dcceae3b50fb35b734e41fba",
+      "block": 16767766,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "fee vault: FlexibleSavingsVault",
+      "hash": "0x4e2b10dae93c95355721ed05d4d7ac34855f9a0a6880c5c1f64544940d15856f",
+      "block": 16767767,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "fee vault: TermVault",
+      "hash": "0x5a53f0aa6a4e634622fc3e8e0f99465c09d6cd741d7d7ae0e6520ccc12956439",
+      "block": 16767768,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "fee vault: StabilityPoolVault",
+      "hash": "0x1161ee8aa4536c7ab0076e3be78442798fcd12dff79d0557f1d1515f7e4b0cda",
+      "block": 16767769,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "Stability Pool exit fee 0.10% (set before launch)",
+      "hash": "0x6a76436a85d8d5cf42d7571c11561ed061439f3295ed1d999cc382249a9209ad",
+      "block": 16767770,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "term: trust allocator as router",
+      "hash": "0x75e22216a1933ddefd8f12edec020a5f11f754533334d62f593f6ae1ac9570cf",
+      "block": 16767771,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x2EeBD6785AB282A07b20A4b1DdF73B126662F844",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "term: trust zap as router",
+      "hash": "0x88befcb8fc395ff208431e46e24c83929f35918be3b8180e6020efd8e610b0a8",
+      "block": 16767773,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x2EeBD6785AB282A07b20A4b1DdF73B126662F844",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "allocator: trust zap as router",
+      "hash": "0xb8b6cbf9aa3c6eaf69923df73baad761630283b24c8d0cf9e7d25cc4e02dcc0a",
+      "block": 16767775,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B",
+      "gasUsed": "125000"
+    },
+    {
+      "label": "register Flexible Savings",
+      "hash": "0x257bfad12a86b260a0092185a0bcffcabe55ee79d33b2e4c87d1f64dd8b85d9f",
+      "block": 16767776,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+      "gasUsed": "370037"
+    },
+    {
+      "label": "register Term Savings",
+      "hash": "0x01e9f5676ae93dc946ba634fba78e0923a529afcbd310cbc60f0a99b7faf4d26",
+      "block": 16767777,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+      "gasUsed": "421148"
+    },
+    {
+      "label": "register Stability Pool",
+      "hash": "0xdfe364636b45dd3b1fa6acf08906eff3cd0bbbd6d67af4765c6f02488b79c01f",
+      "block": 16767778,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+      "gasUsed": "421460"
+    },
+    {
+      "label": "preset Conservative",
+      "hash": "0x5524ab9fff1c378a9b6326198fee70015a6552e34779f8b330b0222d2f48e0cf",
+      "block": 16767780,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B",
+      "gasUsed": "339708"
+    },
+    {
+      "label": "preset Balanced",
+      "hash": "0xa323c1bd93602d8de79c5cafb7dca5041a8f8b983615f995bc03f11819f9d1ee",
+      "block": 16767782,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B",
+      "gasUsed": "300063"
+    },
+    {
+      "label": "preset Growth",
+      "hash": "0xee38ced449d85abcc47bea9df14ad96302e185c66bd40cac02b0a6e8397ffe6a",
+      "block": 16767784,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B",
+      "gasUsed": "351670"
+    },
+    {
+      "label": "swap 0.00621 BTC -> ~485.64 MUSD",
+      "hash": "0x2de5f32b2ec53c5f0993157edba21f25bdd12d99174df610fd1872bcb3a42e5f",
+      "block": 16767785,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xebB377E8519d5B5125C33E31231cEbC3BB73Bfc3",
+      "gasUsed": "525106"
+    },
+    {
+      "label": "fund Flexible reserve 100.00 MUSD (permit)",
+      "hash": "0xfac82c89715ed3118339a00d27413fa4d9d9b256c5e94cb9be55d2b39a1bade4",
+      "block": 16767787,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x914bCE915DFaE6Bdd9d6773829E82909F36a2F84",
+      "gasUsed": "200000"
+    },
+    {
+      "label": "fund Term reserve 100.00 MUSD (permit)",
+      "hash": "0x99d4ccfb3c866d77afa932c30b72861319723776d53eb16b6878ae64886ebefe",
+      "block": 16767790,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x2EeBD6785AB282A07b20A4b1DdF73B126662F844",
+      "gasUsed": "200000"
+    },
+    {
+      "label": "fund faucet 150.00 MUSD",
+      "hash": "0xa4f08a6ffa0b08142913b91ee8a866c9e3214513e3eecb6af5e62e9fdfee91c5",
+      "block": 16767791,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "gasUsed": "60000"
+    },
+    {
+      "label": "announce launch",
+      "hash": "0x5d593f0a23bf63dfb16f719f7742d9ef9007c69b8e78c028685b8fb042e9e13d",
+      "block": 16767792,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+      "gasUsed": "321994"
+    },
+    {
+      "label": "announce SP rule",
+      "hash": "0xb8d901bc980ca3e0d97222a3813cc3c64a820b284879e6fca22da949e2bc57dc",
+      "block": 16767794,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+      "gasUsed": "284167"
+    }
+  ]
+}
