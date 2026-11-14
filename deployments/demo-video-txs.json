@@ -1,0 +1,56 @@
+{
+  "network": "mezotestnet",
+  "chainId": 31611,
+  "recordedOn": "https://mezoflow.vercel.app",
+  "video": "docs/demo/mezoflow-demo.mp4",
+  "txs": [
+    {
+      "label": "swap 0.0004 BTC -> MUSD to wallet (BTC permit)",
+      "hash": "0x3704894ca3d6b49af8c738b533fee718458c6566dab62dcc84e50ffb86f0a5a4",
+      "block": 16768382,
+      "status": "ok",
+      "method": "swapWithPermit",
+      "explorer": "https://explorer.test.mezo.org/tx/0x3704894ca3d6b49af8c738b533fee718458c6566dab62dcc84e50ffb86f0a5a4"
+    },
+    {
+      "label": "swap 0.0003 BTC and deposit into the Stability Pool vault (one tx)",
+      "hash": "0xcdad7e1c34c4fc91fc5426715ab7c5f8f0d8b5f4be462ded2ec2de4cf169c3af",
+      "block": 16768387,
+      "status": "ok",
+      "method": "swapAndDepositWithPermit",
+      "explorer": "https://explorer.test.mezo.org/tx/0xcdad7e1c34c4fc91fc5426715ab7c5f8f0d8b5f4be462ded2ec2de4cf169c3af"
+    },
+    {
+      "label": "deposit 5 MUSD into Term Savings (MUSD permit)",
+      "hash": "0x64ed630936738170d3c7b955e8287c58f2505859802711af95f5b74777f80a4a",
+      "block": 16768394,
+      "status": "ok",
+      "method": "depositWithPermit",
+      "explorer": "https://explorer.test.mezo.org/tx/0x64ed630936738170d3c7b955e8287c58f2505859802711af95f5b74777f80a4a"
+    },
+    {
+      "label": "allocate 12 MUSD with the Balanced preset (permit)",
+      "hash": "0x7eac2243bde77995ba9e67cf2accb4383be87f22717a1bd67b68572f68119b1b",
+      "block": 16768399,
+      "status": "ok",
+      "method": "allocatePresetWithPermit",
+      "explorer": "https://explorer.test.mezo.org/tx/0x7eac2243bde77995ba9e67cf2accb4383be87f22717a1bd67b68572f68119b1b"
+    },
+    {
+      "label": "withdraw 2 MUSD from Flexible Savings",
+      "hash": "0x9b87c4edc001c8657c84276f11751c01ab0bb818e98524a2e983b450580bd1fc",
+      "block": 16768405,
+      "status": "ok",
+      "method": "withdraw",
+      "explorer": "https://explorer.test.mezo.org/tx/0x9b87c4edc001c8657c84276f11751c01ab0bb818e98524a2e983b450580bd1fc"
+    },
+    {
+      "label": "save alert preferences on-chain",
+      "hash": "0x1cccc15b9ed928811253e2fea553602e6b4d6ef1f31600138fda025d66d2b09c",
+      "block": 16768413,
+      "status": "ok",
+      "method": "setPreferences",
+      "explorer": "https://explorer.test.mezo.org/tx/0x1cccc15b9ed928811253e2fea553602e6b4d6ef1f31600138fda025d66d2b09c"
+    }
+  ]
+}

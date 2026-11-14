@@ -485,7 +485,7 @@ timeline.forEach((t, i) => {
   const ms = Math.round(t.start * 1000) + 250;
   filters.push(`[${i + 1}:a]adelay=${ms}|${ms}[a${i}]`);
 });
-filters.push(`${timeline.map((_, i) => `[a${i}]`).join("")}amix=inputs=${timeline.length}:normalize=0[voice]`);
+filters.push(`${timeline.map((_, i) => `[a${i}]`).join("")}amix=inputs=${timeline.length}:normalize=0,loudnorm=I=-16:TP=-1.5:LRA=11[voice]`);
 execFileSync(
   "ffmpeg",
   [
@@ -509,6 +509,8 @@ execFileSync(
     "30",
     "-c:a",
     "aac",
+    "-ar",
+    "48000",
     "-b:a",
     "128k",
     "-movflags",
