@@ -41,7 +41,7 @@ function inline(text: string, keyBase: string): ReactNode[] {
     if (tok.startsWith("**")) {
       out.push(
         <strong key={key} className="font-semibold text-foam">
-          {tok.slice(2, -2)}
+          {inline(tok.slice(2, -2), key)}
         </strong>,
       );
     } else if (tok.startsWith("[")) {
@@ -54,7 +54,7 @@ function inline(text: string, keyBase: string): ReactNode[] {
         </code>,
       );
     } else {
-      out.push(<em key={key}>{tok.slice(1, -1)}</em>);
+      out.push(<em key={key}>{inline(tok.slice(1, -1), key)}</em>);
     }
     last = idx + tok.length;
   }

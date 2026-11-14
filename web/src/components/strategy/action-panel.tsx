@@ -200,7 +200,7 @@ function DepositForm({
       {needsApproval && !busy && (
         <p className="-mt-2 text-center text-xs text-silt">One transaction. You sign a permit for this exact amount first; it costs no gas.</p>
       )}
-      {bal === 0n && (
+      {wallet === 0n && (
         <div className="grid gap-2 border-t rule pt-4">
           <p className="text-sm text-silt">No MUSD in this wallet yet. Swap testnet BTC for MUSD, or claim a little from the test faucet.</p>
           <Link href="/app/swap" className="btn btn-primary w-full">
