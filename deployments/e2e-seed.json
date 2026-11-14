@@ -1,0 +1,230 @@
+{
+  "network": "mezotestnet",
+  "chainId": 31611,
+  "txs": [
+    {
+      "label": "deployer -> Ana (saver): 0.0012 BTC",
+      "hash": "0x9be2dcfc77f1fec8a31665b046e557a2c30950523c84383fa97486e6e9c7b97e",
+      "block": 16767848,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x707301DFb1BE58C3584Abf24a2C5F9086d70d4B3",
+      "value": "1200000000000000"
+    },
+    {
+      "label": "deployer -> Ana (saver): 30 MUSD",
+      "hash": "0x176cbd6d1c8068d5bf0bf347dc0fb694c11cd79eebc7ad7fb4dbf38876d9330b",
+      "block": 16767850,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "gasUsed": "60000"
+    },
+    {
+      "label": "deployer -> Ben (allocator): 0.0012 BTC",
+      "hash": "0x154d65fb3f0aa06753f7f936cf070cc777f169ff4157f884b4a4a9b674c354eb",
+      "block": 16767851,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x66F72572C24C4d999cb1dC4D9Ebb2F203db4b8B3",
+      "value": "1200000000000000"
+    },
+    {
+      "label": "deployer -> Ben (allocator): 30 MUSD",
+      "hash": "0x187bd1d9bd635115befbc729a52eed5d0e9ac453384b16e74f8136c67b60b7bd",
+      "block": 16767853,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "gasUsed": "60000"
+    },
+    {
+      "label": "deployer -> Chloe (Stability Pool): 0.0012 BTC",
+      "hash": "0x743cf31e1bc3939111fba69571b3a4190f7dd4b553700c4d3c9204402a09e4f4",
+      "block": 16767854,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x4B82B085f158B20c60CD2B269e133d7Ec4998CCf",
+      "value": "1200000000000000"
+    },
+    {
+      "label": "deployer -> Chloe (Stability Pool): 30 MUSD",
+      "hash": "0xb1b862effd3688bbc31ac8e9514e25ee9264ee22f96f3e8f139243a86eaec44d",
+      "block": 16767855,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+      "gasUsed": "60000"
+    },
+    {
+      "label": "deployer -> browser e2e wallet: 0.0015 BTC",
+      "hash": "0x3d8440be0708e21312c61a7a4ec5ffcbf064d1654c0532c93232eff02284cf1e",
+      "block": 16767856,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x6B2CEDDA1772523648F43ffa247B3b1Ce502172e",
+      "value": "1500000000000000"
+    },
+    {
+      "label": "deployer -> demo video wallet: 0.0015 BTC",
+      "hash": "0x102cad340f9f93677d5b5d4cef29ea0c712752434fdd77ecd279afed84be346f",
+      "block": 16767858,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xDf43754DB11808B8D2Eb8AB030EeF6857C270d50",
+      "value": "1500000000000000"
+    },
+    {
+      "label": "Ana: faucet claim",
+      "hash": "0x37a0b550fc80e123d6494ff66d2b1b917b60f6c7b077d7e84b1fd27b21cdba5c",
+      "block": 16767860,
+      "from": "0x707301DFb1BE58C3584Abf24a2C5F9086d70d4B3",
+      "to": "0x217522c6C7d434E96034484e5f38c71a0747Cb56",
+      "gasUsed": "286725"
+    },
+    {
+      "label": "Ana: deposit 25 MUSD into Flexible (permit, 1 tx)",
+      "hash": "0x69ab6c28b53da7398be75811d133c393f9742b00206283c5ba20c96f3f120cd5",
+      "block": 16767862,
+      "from": "0x707301DFb1BE58C3584Abf24a2C5F9086d70d4B3",
+      "to": "0x914bCE915DFaE6Bdd9d6773829E82909F36a2F84",
+      "gasUsed": "419256"
+    },
+    {
+      "label": "Ana: swap BTC and deposit into Term (0.00030 BTC ≈ 23.46 MUSD)",
+      "hash": "0xd57a78ae3c529bf75c56080d6080d610f78723c62674c2cbafaa65651a8537e7",
+      "block": 16767864,
+      "from": "0x707301DFb1BE58C3584Abf24a2C5F9086d70d4B3",
+      "to": "0xebB377E8519d5B5125C33E31231cEbC3BB73Bfc3",
+      "gasUsed": "719233"
+    },
+    {
+      "label": "Ana: set alert preferences",
+      "hash": "0xf7d53082867ba0db019ee879f0f33c5b83a705bf751a60680509afa06bdeede9",
+      "block": 16767866,
+      "from": "0x707301DFb1BE58C3584Abf24a2C5F9086d70d4B3",
+      "to": "0xE25AC0100B76d154d44B1883CA15a2aAe90793cF",
+      "gasUsed": "75000"
+    },
+    {
+      "label": "Ana: withdraw 5 MUSD from Flexible",
+      "hash": "0x121fc8af7901f139a0e6d853239418dd84b204633c25cbbb8a1788d995e14381",
+      "block": 16767868,
+      "from": "0x707301DFb1BE58C3584Abf24a2C5F9086d70d4B3",
+      "to": "0x914bCE915DFaE6Bdd9d6773829E82909F36a2F84",
+      "gasUsed": "308499"
+    },
+    {
+      "label": "Ben: faucet claim",
+      "hash": "0x7e5599b1e42c9b8dd8aea119d58686e27c199c65286057f3ae4521f67eef6189",
+      "block": 16767869,
+      "from": "0x66F72572C24C4d999cb1dC4D9Ebb2F203db4b8B3",
+      "to": "0x217522c6C7d434E96034484e5f38c71a0747Cb56",
+      "gasUsed": "252525"
+    },
+    {
+      "label": "Ben: allocate 30 MUSD with Balanced preset (permit)",
+      "hash": "0xfae955e44b54e1b36951dc5c210ce3d9c828cd659e590477f45e020643557499",
+      "block": 16767871,
+      "from": "0x66F72572C24C4d999cb1dC4D9Ebb2F203db4b8B3",
+      "to": "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B",
+      "gasUsed": "1056678"
+    },
+    {
+      "label": "Ben: swap BTC into the Growth preset (0.00030 BTC ≈ 23.46 MUSD)",
+      "hash": "0x2923f420385971966ad83abd6ae426eff72707949672aeea6a8f033e5dce3db8",
+      "block": 16767873,
+      "from": "0x66F72572C24C4d999cb1dC4D9Ebb2F203db4b8B3",
+      "to": "0xebB377E8519d5B5125C33E31231cEbC3BB73Bfc3",
+      "gasUsed": "1365932"
+    },
+    {
+      "label": "Ben: move half his Flexible shares to Term (share permit)",
+      "hash": "0xf9b537fdb1bbc2bd6da5af525f7933a830c348068b68f3ba1ee4aba1e835d7c7",
+      "block": 16767875,
+      "from": "0x66F72572C24C4d999cb1dC4D9Ebb2F203db4b8B3",
+      "to": "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B",
+      "gasUsed": "750000"
+    },
+    {
+      "label": "deployer -> Ben: 30 MEZO",
+      "hash": "0x6eeaf8e38789db70cac4595b5e0d9d622a8d41b96ab41f9414114be1f17ce019",
+      "block": 16767876,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x7B7c000000000000000000000000000000000001",
+      "gasUsed": "60000"
+    },
+    {
+      "label": "Ben: swap 30 MEZO -> ~17.65 MUSD (MEZO permit)",
+      "hash": "0x881042f9f37d35d8fc8b4db6acbc2d807472994daa1b895813c7564084e2be59",
+      "block": 16767878,
+      "from": "0x66F72572C24C4d999cb1dC4D9Ebb2F203db4b8B3",
+      "to": "0xebB377E8519d5B5125C33E31231cEbC3BB73Bfc3",
+      "gasUsed": "450000"
+    },
+    {
+      "label": "Chloe: swap BTC to MUSD in her wallet (0.00040 BTC ≈ 31.28 MUSD)",
+      "hash": "0xb484870cca5283a153f0dcf7e9e4ae9db8fa020dac2ea352af57cc3319c7158a",
+      "block": 16767880,
+      "from": "0x4B82B085f158B20c60CD2B269e133d7Ec4998CCf",
+      "to": "0xebB377E8519d5B5125C33E31231cEbC3BB73Bfc3",
+      "gasUsed": "600000"
+    },
+    {
+      "label": "Chloe: deposit 40 MUSD into Stability Pool vault (permit)",
+      "hash": "0x13bc0edeef585e5b28bffa78ecba7b615abbd29a51a8e628b89cb7441cd7197d",
+      "block": 16767882,
+      "from": "0x4B82B085f158B20c60CD2B269e133d7Ec4998CCf",
+      "to": "0xB57e3573E5eadF4468972B043C1E164d16aB2fA3",
+      "gasUsed": "600000"
+    },
+    {
+      "label": "Chloe: deposit 10 MUSD into Term (permit)",
+      "hash": "0x063f27a305020f80820607282def5e8cdad0ab61e0d7bf58485e9cebdbdefe2c",
+      "block": 16767883,
+      "from": "0x4B82B085f158B20c60CD2B269e133d7Ec4998CCf",
+      "to": "0x2EeBD6785AB282A07b20A4b1DdF73B126662F844",
+      "gasUsed": "361782"
+    },
+    {
+      "label": "Chloe: leave Term early (1.5% penalty to reserve)",
+      "hash": "0xb7c14f0ae28d6c7ad75ec65e86e288a2fe9c153553675ab8dcc0737436ee4de2",
+      "block": 16767885,
+      "from": "0x4B82B085f158B20c60CD2B269e133d7Ec4998CCf",
+      "to": "0x2EeBD6785AB282A07b20A4b1DdF73B126662F844",
+      "gasUsed": "336231"
+    },
+    {
+      "label": "Chloe: withdraw 5 MUSD from Stability Pool vault (0.10% fee)",
+      "hash": "0xd19b3d30a2febb0e8ae3ca56c3b7a8395da7584183750e58b7d4a81532487513",
+      "block": 16767887,
+      "from": "0x4B82B085f158B20c60CD2B269e133d7Ec4998CCf",
+      "to": "0xB57e3573E5eadF4468972B043C1E164d16aB2fA3",
+      "gasUsed": "750000"
+    },
+    {
+      "label": "keeper: poke Flexible",
+      "hash": "0x996851766762031fb124f0c61fd3f7de6b02b00341051bd0e9c2d639813e70d1",
+      "block": 16767889,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x914bCE915DFaE6Bdd9d6773829E82909F36a2F84",
+      "gasUsed": "150000"
+    },
+    {
+      "label": "keeper: poke Term",
+      "hash": "0xd20c6fb6658dfbecb4ae3cc299b712306993b73b05dc77f2e4f7b25818a3bec2",
+      "block": 16767890,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0x2EeBD6785AB282A07b20A4b1DdF73B126662F844",
+      "gasUsed": "150000"
+    },
+    {
+      "label": "keeper: rebalance Stability Pool vault",
+      "hash": "0x527f73cb0fdc35b6e5dad91712b71e8d9243834143f5b56dbd410705e4e70621",
+      "block": 16767891,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xB57e3573E5eadF4468972B043C1E164d16aB2fA3",
+      "gasUsed": "600000"
+    },
+    {
+      "label": "announce: seeded demo activity",
+      "hash": "0x09fef0be8c8662d7e33175baad9e71c9a6fc8c5f3215ef271c96dc09c2219d52",
+      "block": 16767892,
+      "from": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
+      "to": "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+      "gasUsed": "237291"
+    }
+  ]
+}

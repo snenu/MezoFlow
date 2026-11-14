@@ -2,33 +2,33 @@
 
 export const deployment = {
   "chainId": 31611,
-  "startBlock": 0,
-  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "startBlock": 16767742,
+  "deployer": "0x96dAd720ec7cf5c3a0c6Cf724A18C82bfB3B2DD3",
   "mezo": {
-    "MUSD": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-    "BTC": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-    "MEZO": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
-    "StabilityPool": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
-    "PriceFeed": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-    "SortedTroves": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-    "TroveManager": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
-    "BorrowerOperations": "0x0000000000000000000000000000000000000000",
-    "PoolsRouter": "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+    "MUSD": "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503",
+    "BTC": "0x7b7C000000000000000000000000000000000000",
+    "MEZO": "0x7B7c000000000000000000000000000000000001",
+    "StabilityPool": "0x1CCA7E410eE41739792eA0A24e00349Dd247680e",
+    "PriceFeed": "0x86bCF0841622a5dAC14A313a15f96A95421b9366",
+    "SortedTroves": "0x722E4D24FD6Ff8b0AC679450F3D91294607268fA",
+    "TroveManager": "0xE47c80e8c23f6B4A1aE41c34837a0599D5D16bb0",
+    "BorrowerOperations": "0xCdF7028ceAB81fA0C6971208e83fa7872994beE5",
+    "PoolsRouter": "0x9a1ff7FE3a0F69959A3fBa1F1e5ee18e1A9CD7E9",
     "PoolFactory": "0x4947243CC818b627A5D06d14C4eCe7398A23Ce1A",
-    "MusdBtcPool": "0x0000000000000000000000000000000000000000"
+    "MusdBtcPool": "0xd16A5Df82120ED8D626a1a15232bFcE2366d6AA9"
   },
   "contracts": {
-    "ActivityLedger": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
-    "FeeManager": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
-    "StrategyRegistry": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
-    "FlexibleSavingsVault": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
-    "TermVault": "0x9A676e781A523b5d0C0e43731313A708CB607508",
-    "StabilityPoolVault": "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
-    "AutoAllocator": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
-    "MUSDFaucet": "0x9A9f2CCfdE556A7E9Ff0848998Aa4a0CFD8863AE",
-    "AlertCenter": "0x68B1D87F95878fE05B998F19b66F4baba5De1aed",
-    "MezoFlowZap": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c",
-    "MezoFlowLens": "0xc6e7DF5E7b4f2A278906862b61205850344D4e7d"
+    "ActivityLedger": "0x8aE22979669d93B106304700B27657Fe2814Bd4a",
+    "FeeManager": "0x836D0c8e9aAaF425e892c0c76A93e058C17Da9e2",
+    "StrategyRegistry": "0xE496A7b6eA9D33f967d654428a23c906ed7D9C0D",
+    "FlexibleSavingsVault": "0x914bCE915DFaE6Bdd9d6773829E82909F36a2F84",
+    "TermVault": "0x2EeBD6785AB282A07b20A4b1DdF73B126662F844",
+    "StabilityPoolVault": "0xB57e3573E5eadF4468972B043C1E164d16aB2fA3",
+    "AutoAllocator": "0xf3DD9838269aFf50a5E702b71Da60ad5fE92B82B",
+    "MUSDFaucet": "0x217522c6C7d434E96034484e5f38c71a0747Cb56",
+    "AlertCenter": "0xE25AC0100B76d154d44B1883CA15a2aAe90793cF",
+    "MezoFlowZap": "0xebB377E8519d5B5125C33E31231cEbC3BB73Bfc3",
+    "MezoFlowLens": "0x548D3c642e39593c7D31F3C678878a3dB859F5dd"
   }
 } as const;
 
@@ -2340,6 +2340,19 @@ export const flexibleSavingsVaultAbi = [
   },
   {
     "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "DustSwept",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [],
     "name": "EIP712DomainChanged",
     "type": "event"
@@ -4395,6 +4408,19 @@ export const termVaultAbi = [
       }
     ],
     "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "DustSwept",
     "type": "event"
   },
   {
@@ -6760,6 +6786,19 @@ export const stabilityPoolVaultAbi = [
       }
     ],
     "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "DustSwept",
     "type": "event"
   },
   {
