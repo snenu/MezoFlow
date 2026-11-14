@@ -166,7 +166,7 @@ export default function RiskPage() {
           Contracts behind these numbers
         </h2>
         <div className="panel mt-5 overflow-x-auto">
-          <table className="table min-w-[560px]">
+          <table className="table sm:min-w-[560px]">
             <tbody>
               {(
                 [
@@ -181,9 +181,12 @@ export default function RiskPage() {
                 ] as const
               ).map(([name, addr, owner]) => (
                 <tr key={addr}>
-                  <td className="font-semibold">{name}</td>
-                  <td className="text-sm text-silt">{owner}</td>
-                  <td className="text-right">
+                  <td className="font-semibold">
+                    {name}
+                    <span className="block text-xs font-normal text-silt sm:hidden">{owner}</span>
+                  </td>
+                  <td className="hidden text-sm text-silt sm:table-cell">{owner}</td>
+                  <td className="whitespace-nowrap text-right">
                     <AddressLink address={addr} />
                   </td>
                 </tr>

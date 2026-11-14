@@ -21,7 +21,50 @@ export function StrategiesSection() {
         </p>
       </div>
 
-      <div className="panel mt-12 overflow-x-auto">
+      {/* Phones and tablets: one stacked row per strategy, nothing to scroll sideways. */}
+      <ul className="panel mt-12 divide-y divide-shoal lg:hidden" aria-label="Strategies">
+        {isLoading &&
+          [0, 1, 2].map((i) => (
+            <li key={i} className="p-5">
+              <Skel w="100%" h="5rem" />
+            </li>
+          ))}
+        {strategies.map((s) => {
+          const sp = s.meta.kind === KIND.STABILITY_POOL;
+          return (
+            <li key={s.meta.vault} className="p-5">
+              <Link href={`/app/strategies/${s.meta.slug}`} className="text-lg font-semibold hover:text-tide">
+                {s.meta.name}
+              </Link>
+              <p className="mt-1 text-sm leading-relaxed text-silt">{s.meta.summary}</p>
+              <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-sm sm:grid-cols-3">
+                <div>
+                  <dt className="text-silt">Return</dt>
+                  <dd className="mt-0.5 font-semibold tabular">
+                    {sp ? "Variable, in BTC" : `${fmtPct(s.stats.rateBps)} APR`}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-silt">Risk</dt>
+                  <dd className="mt-1">
+                    <RiskMeter score={s.meta.riskScore} />
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-silt">Deposited</dt>
+                  <dd className="mt-0.5 font-semibold tabular">{fmtAmount(s.stats.totalAssets)} MUSD</dd>
+                </div>
+                <div className="col-span-2 sm:col-span-3">
+                  <dt className="text-silt">Withdrawals</dt>
+                  <dd className="mt-0.5 text-mist">{s.meta.liquidityTerms}</dd>
+                </div>
+              </dl>
+            </li>
+          );
+        })}
+      </ul>
+
+      <div className="panel mt-12 hidden overflow-x-auto lg:block">
         <table className="table min-w-[860px]">
           <thead>
             <tr>
@@ -201,8 +244,21 @@ export function ContractsSection() {
     <section id="contracts" className="mx-auto max-w-[1200px] scroll-mt-20 px-5 pb-24 sm:px-10">
       <h2 className="h-section">Every contract is public</h2>
       <p className="lede mt-4">Deployed on Mezo Testnet (chain 31611). Open any of them on the explorer and check the numbers yourself.</p>
-      <div className="mt-10 overflow-x-auto">
-        <table className="table min-w-[720px]">
+      <ul className="mt-10 divide-y divide-shoal border-y rule md:hidden" aria-label="Contracts">
+        {CONTRACT_ROWS.map(([name, addr, what]) => (
+          <li key={addr} className="py-4">
+            <div className="flex items-baseline justify-between gap-4">
+              <span className="font-semibold">{name}</span>
+              <a className="link tabular text-sm" href={addressUrl(addr)} target="_blank" rel="noreferrer">
+                {shortAddr(addr, 4)}
+              </a>
+            </div>
+            <p className="mt-1 text-sm text-silt">{what}</p>
+          </li>
+        ))}
+      </ul>
+      <div className="mt-10 hidden overflow-x-auto md:block">
+        <table className="table min-w-[680px]">
           <tbody>
             {CONTRACT_ROWS.map(([name, addr, what]) => (
               <tr key={addr}>

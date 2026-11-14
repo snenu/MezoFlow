@@ -209,7 +209,35 @@ export default function OverviewPage() {
             Browse strategies
           </Link>
         </div>
-        <div className="mt-3 overflow-x-auto">
+        {/* Up to laptop widths: one stacked row per position, so nothing scrolls sideways. */}
+        <ul className="mt-3 divide-y divide-shoal border-t rule xl:hidden" aria-label="Positions">
+          {p.positions.map(({ strategy: s, value }) => (
+            <li key={s.meta.vault} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-6 py-4">
+              <div className="flex min-w-0 flex-1 items-center gap-3">
+                <span className="h-2.5 w-2.5 shrink-0 rounded-[3px]" style={{ background: seriesForVault(s.meta.vault) }} aria-hidden />
+                <div className="min-w-0">
+                  <Link href={`/app/strategies/${s.meta.slug}`} className="font-semibold hover:text-tide">
+                    {s.meta.name}
+                  </Link>
+                  <p className="text-xs text-silt">{s.meta.protocol}</p>
+                </div>
+              </div>
+              <p className="text-right">
+                <span className="font-semibold tabular">{fmtAmount(value)}</span>
+                <span className="text-silt"> MUSD</span>
+              </p>
+              <div className="flex basis-full flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm">
+                <span>
+                  {positionEarning(s)} <span className="text-mist">· {positionStatus(s, now)}</span>
+                </span>
+                <Link href={`/app/strategies/${s.meta.slug}`} className="btn btn-ghost h-9 px-3 text-sm">
+                  {s.user.shares > 0n ? "Manage" : "Deposit"}
+                </Link>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="mt-3 hidden overflow-x-auto xl:block">
           <table className="table min-w-[760px]">
             <thead>
               <tr>
@@ -227,10 +255,6 @@ export default function OverviewPage() {
             </thead>
             <tbody>
               {p.positions.map(({ strategy: s, value }) => {
-                const isSp = s.meta.kind === KIND.STABILITY_POOL;
-                const isTerm = s.meta.kind === KIND.TERM;
-                const unlock = Number(s.user.unlockAt);
-                const locked = isTerm && unlock * 1000 > now;
                 return (
                   <tr key={s.meta.vault}>
                     <td>
@@ -248,28 +272,8 @@ export default function OverviewPage() {
                       <span className="font-semibold tabular">{fmtAmount(value)}</span>
                       <span className="text-silt"> MUSD</span>
                     </td>
-                    <td className="text-sm">
-                      {isSp ? (
-                        <span className="text-ember">BTC from liquidations</span>
-                      ) : (
-                        <span className="tabular">
-                          {fmtPct(s.stats.rateBps)} APR <span className="text-silt">≈ {aprToApy(s.stats.rateBps).toFixed(2)}% APY</span>
-                        </span>
-                      )}
-                    </td>
-                    <td className="text-sm text-mist">
-                      {s.user.shares === 0n
-                        ? "No position"
-                        : isTerm
-                          ? locked
-                            ? `Locked for ${fmtDuration(unlock - now / 1000)}`
-                            : "Unlocked"
-                          : isSp
-                            ? s.user.pendingBtc > 0n
-                              ? `${fmtBtc(s.user.pendingBtc)} BTC to claim`
-                              : "Active"
-                            : "Withdraw any time"}
-                    </td>
+                    <td className="text-sm">{positionEarning(s, true)}</td>
+                    <td className="text-sm text-mist">{positionStatus(s, now)}</td>
                     <td>
                       <RiskMeter score={s.meta.riskScore} size="sm" showLabel={false} />
                     </td>
@@ -318,6 +322,31 @@ export default function OverviewPage() {
       </div>
     </>
   );
+}
+
+type PositionStrategy = ReturnType<typeof usePortfolio>["positions"][number]["strategy"];
+
+function positionEarning(s: PositionStrategy, withApy = false) {
+  if (s.meta.kind === KIND.STABILITY_POOL) return <span className="text-ember">BTC from liquidations</span>;
+  return (
+    <span className="tabular">
+      {fmtPct(s.stats.rateBps)} APR
+      {withApy && <span className="text-silt"> ≈ {aprToApy(s.stats.rateBps).toFixed(2)}% APY</span>}
+    </span>
+  );
+}
+
+function positionStatus(s: PositionStrategy, now: number) {
+  if (s.user.shares === 0n) return "No position";
+  if (s.meta.kind === KIND.TERM) {
+    const unlock = Number(s.user.unlockAt);
+    if (unlock * 1000 <= now) return "Unlocked";
+    return now ? `Locked for ${fmtDuration(unlock - now / 1000)}` : "Locked";
+  }
+  if (s.meta.kind === KIND.STABILITY_POOL) {
+    return s.user.pendingBtc > 0n ? `${fmtBtc(s.user.pendingBtc)} BTC to claim` : "Active";
+  }
+  return "Withdraw any time";
 }
 
 function Total({ label, value, tone }: { label: string; value: string; tone?: string }) {

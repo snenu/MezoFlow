@@ -128,12 +128,12 @@ export function Exposure({ strategies, account }: { strategies: readonly Strateg
 
       {groups.length > 0 && (
         <div className="mt-6 overflow-x-auto">
-          <table className="table min-w-[480px]">
+          <table className="table sm:min-w-[480px]">
             <caption className="sr-only">Your deposits grouped by risk score</caption>
             <thead>
               <tr>
                 <th scope="col">Risk level</th>
-                <th scope="col">Strategies</th>
+                <th scope="col" className="hidden sm:table-cell">Strategies</th>
                 <th scope="col" className="text-right">
                   Value
                 </th>
@@ -148,7 +148,7 @@ export function Exposure({ strategies, account }: { strategies: readonly Strateg
                   <td>
                     <RiskMeter score={g.score} size="sm" />
                   </td>
-                  <td className="text-sm text-mist">{g.items.map((i) => i.name).join(", ")}</td>
+                  <td className="hidden text-sm text-mist sm:table-cell">{g.items.map((i) => i.name).join(", ")}</td>
                   <td className="text-right tabular">{fmtAmount(g.value)} MUSD</td>
                   <td className="text-right tabular">{((g.value / deployedTotal) * 100).toFixed(1)}%</td>
                 </tr>
